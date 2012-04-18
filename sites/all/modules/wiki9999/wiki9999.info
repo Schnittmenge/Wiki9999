@@ -1,0 +1,3 @@
+name = wiki9999
+description = Adds a new term after saving topic nodes.
+core = 7.x

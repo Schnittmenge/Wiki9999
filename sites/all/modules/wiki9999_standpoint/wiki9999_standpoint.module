@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Standpoint feature.
+ */
+
+include_once 'wiki9999_standpoint.features.inc';

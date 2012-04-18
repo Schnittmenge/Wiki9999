@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @file
+ * The token_field.install file makes sure the field are installed, uninstalled,
+ * disabled and enabled correctly.
+ * TOOD: Is this needed for D7?
+ */
+
+

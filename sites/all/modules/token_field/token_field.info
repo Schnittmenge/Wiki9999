@@ -1,0 +1,13 @@
+name = Token Field
+description = Provides a Field Type to output "compound" fields using the Token module.
+core = 7.x
+
+dependencies[] = token
+dependencies[] = field
+
+; Information added by drupal.org packaging script on 2011-05-05
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "token_field"
+datestamp = "1304597843"
+

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Topic feature.
+ */
+
+include_once 'wiki9999_topic.features.inc';

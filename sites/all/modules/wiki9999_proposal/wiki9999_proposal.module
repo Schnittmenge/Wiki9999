@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Proposal feature.
+ */
+
+include_once 'wiki9999_proposal.features.inc';

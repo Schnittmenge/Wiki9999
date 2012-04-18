@@ -1,0 +1,211 @@
+<?php
+
+/**
+ * @file
+ * Optional extension to CCK (Content Construction Kit) to provide a read-only
+ * field which allows embedding of "compound" fields using Tokens.
+ */
+
+
+/**
+ * Implements hook_field_info().
+ */
+function token_field_field_info() {
+  return array(
+    'token_field' => array(
+      'label' => t('Token Field'),
+      'description' => t('A read-only compound field using Tokens.'),
+      'default_widget' => 'token_field',
+      'default_formatter' => 'token_field_default',
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_field_settings_form().
+ */
+function token_field_field_settings_form($field, $instance, $has_data) {
+  $settings = $field['settings'];
+  $form = array();
+
+  $form['template'] = array(
+    '#type' => 'text_format',
+    '#default_value' => isset($settings['template']['value']) ? $settings['template']['value'] : '',
+    '#format' => isset($settings['template']['format']) ? $settings['template']['format'] : NULL,
+    '#description' => t('Using the text area, define the layout for this field using HTML and Tokens.'),
+  );
+
+  $form['token_help'] = array(
+    '#theme' => 'token_tree',
+    '#token_types' => array('node'),
+  );
+
+  return $form;
+}
+
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function token_field_form_field_ui_field_edit_form_alter(&$form, &$form_state, $form_id) {
+  // Not intereted in non-token_field forms
+  if ($form['#field']['type'] != 'token_field') {
+    return;
+  }
+
+  // By settings the following fields to 'value', they will no longer appear
+  // in the form but their value will appear in the submission handlers.
+  $form['instance']['required']['#type'] = 'value';
+  $form['instance']['description']['#type'] = 'value';
+  $form['field']['cardinality']['#type'] = 'value';
+}
+
+/**
+ * Implements hook_field_instance_settings_form().
+ */
+function token_field_field_instance_settings_form($field, $instance) {
+  // @todo This currently isn't used. Do we need to declare it?
+  return array();
+}
+
+/**
+ * Implements hook_field().
+ */
+function token_field_field_load($entity_type, $entities, $field, $instances, $landcode, &$items) {
+  foreach ($entities as $id => $entity) {
+    // Get the template from the field and overly the defaults
+    $item = $field['settings']['template'] + array('value' => '', 'format' => filter_default_format());
+
+    // Parse the body for tokens
+    $types = array('global' => NULL, $entity_type => $entity);
+    $item['value_token_filtered'] = token_replace($item['value'], $types);
+    $item['safe'] = check_markup($item['value_token_filtered'], $item['format']);
+    $items[$id][0] = $item;
+  }
+}
+
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function token_field_field_formatter_info() {
+  return array(
+    'token_field_default' => array('field types' => array('token_field'), 'label' => t('Default')),
+  );
+}
+
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function token_field_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  // @todo
+}
+
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function token_field_field_formatter_settings_summary($field, $instance, $view_mode) {
+  // @todo
+}
+
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function token_field_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  $element = array();
+
+  switch ($display['type']) {
+    case 'token_field_default' :
+      foreach ($items as $delta => $item) {
+        $element[$delta] = array('#markup' => $item['safe']);
+      }
+      break;
+  }
+
+  return $element;
+}
+
+
+/**
+ * Implements hook_field_widget_info().
+ */
+function token_field_field_widget_info() {
+  return array(
+    'token_field' => array(
+      'label' => t('Token Field (Read Only)'),
+      'field types' => array('token_field'),
+      'settings' => array(),
+      'behaviors' => array(
+        'multiple values' => FIELD_BEHAVIOR_DEFAULT,
+        'default value' => FIELD_BEHAVIOR_NONE,
+      ),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_widget().
+ */
+function token_field_widget(&$form, &$form_state, $field, $items, $delta = 0) {
+  return array();
+}
+
+
+/**
+ * Implements hook_field_widget_settings_form().
+ */
+/*
+ * Not needed at the moment - keeping for future possible reference
+function token_field_field_widget_settings_form($field, $instance) {
+}
+*/
+
+
+/**
+ * Implements hook_field_widget_form().
+ */
+function token_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+}
+
+
+/**
+ * Implements hook_field_widget_error().
+ */
+function token_field_field_widget_error($element, $error, $form, &$form_state) {
+}
+
+
+/**
+ * Implements hook_field_widget_translation().
+ */
+function token_field_field_prepare_translation($entity_type, $entity, $field, $instance, $langcode, &$items, $source_entity, $source_langcode) {
+}
+
+
+/**
+ * Implements hook_filter_format_update().
+ */
+function token_field_filter_format_update($format) {
+  field_cache_clear();
+}
+
+
+/**
+ * Implements hook_filter_format_disable().
+ */
+function token_field_filter_format_disable($format) {
+  field_cache_clear();
+}
+
+
+/**
+ * Implements hook_field_is_empty().
+ */
+function token_field_field_is_empty($item, $field) {
+  return FALSE;
+}
