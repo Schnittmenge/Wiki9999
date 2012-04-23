@@ -75,7 +75,7 @@ function wiki9999_opinion_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '8',
+        'weight' => '9',
       ),
     ),
   );
@@ -199,7 +199,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -274,7 +274,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -342,7 +342,7 @@ function wiki9999_opinion_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '7',
+        'weight' => '8',
       ),
     ),
   );
@@ -398,7 +398,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -472,7 +472,78 @@ function wiki9999_opinion_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '6',
+        'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-opinion-field_topic_id_taxonomy'
+  $fields['node-opinion-field_topic_id_taxonomy'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_topic_id_taxonomy',
+      'foreign keys' => array(
+        'tid' => array(
+          'columns' => array(
+            'tid' => 'tid',
+          ),
+          'table' => 'taxonomy_term_data',
+        ),
+      ),
+      'indexes' => array(
+        'tid' => array(
+          0 => 'tid',
+        ),
+      ),
+      'module' => 'taxonomy',
+      'settings' => array(
+        'allowed_values' => array(
+          0 => array(
+            'vocabulary' => 'topic_id_taxonomy',
+            'parent' => '0',
+          ),
+        ),
+        'options_list_callback' => 'i18n_taxonomy_allowed_values',
+      ),
+      'translatable' => '0',
+      'type' => 'taxonomy_term_reference',
+    ),
+    'field_instance' => array(
+      'bundle' => 'opinion',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'i18n_taxonomy',
+          'settings' => array(),
+          'type' => 'i18n_taxonomy_term_reference_link',
+          'weight' => 9,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_topic_id_taxonomy',
+      'label' => 'Topic id',
+      'required' => 0,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'options',
+        'settings' => array(),
+        'type' => 'options_select',
+        'weight' => '2',
       ),
     ),
   );
@@ -528,7 +599,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -544,6 +615,7 @@ function wiki9999_opinion_field_default_fields() {
   t('Publisher homepage');
   t('Tags');
   t('To promote a content');
+  t('Topic id');
   t('Website Source');
 
   return $fields;

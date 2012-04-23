@@ -1,0 +1,28 @@
+<?php
+
+function wiki9999_misc_install() {
+
+	$name = 'CC BY-SA';
+
+     $vid = db_select('taxonomy_vocabulary', 'tv')
+      ->fields('tv', array('vid'))
+      ->condition('machine_name', 'legal_rights_taxonomy')
+      ->execute()
+      ->fetchField();
+
+     // Wir bauen uns einen Term-Array auf
+    $term = array(
+      // Id des Vokabulars 'topic-id-taxonomy'.
+      'vid' => $vid,
+      'name' => $name,
+    );
+
+    // Wir gucken ob es den Term schon gibt, und speichern uns die Anzahl als Boolean (TRUE oder FALSE).
+    $term_exists = db_query('SELECT name FROM {taxonomy_term_data} WHERE name = :topic', array(':topic' => $name))->rowCount();
+    $term_exists = (bool) $term_exists;
+
+    // Falls der Term noch nicht existiert, legen wir ihn an.
+    if(!$term_exists) {
+      taxonomy_term_save((object) $term);
+    }
+}

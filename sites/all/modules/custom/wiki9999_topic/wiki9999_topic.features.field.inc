@@ -77,7 +77,7 @@ function wiki9999_topic_field_default_fields() {
           'summary_rows' => 5,
         ),
         'type' => 'text_textarea_with_summary',
-        'weight' => '-4',
+        'weight' => '7',
       ),
     ),
   );
@@ -133,7 +133,7 @@ function wiki9999_topic_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '0',
+        'weight' => '4',
       ),
     ),
   );
@@ -208,7 +208,7 @@ function wiki9999_topic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '1',
+        'weight' => '5',
       ),
     ),
   );
@@ -264,7 +264,7 @@ function wiki9999_topic_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '-3',
+        'weight' => '2',
       ),
     ),
   );
@@ -335,7 +335,7 @@ function wiki9999_topic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '3',
+        'weight' => '6',
       ),
     ),
   );
@@ -406,7 +406,7 @@ function wiki9999_topic_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '5',
+        'weight' => '1',
       ),
     ),
   );
@@ -462,7 +462,7 @@ function wiki9999_topic_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '-2',
+        'weight' => '3',
       ),
     ),
   );
