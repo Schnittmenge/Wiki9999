@@ -10,6 +10,144 @@
 function wiki9999_opinion_field_default_fields() {
   $fields = array();
 
+  // Exported field: 'node-opinion-body'
+  $fields['node-opinion-body'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(
+        0 => 'node',
+      ),
+      'field_name' => 'body',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(),
+      'translatable' => '0',
+      'type' => 'text_with_summary',
+    ),
+    'field_instance' => array(
+      'bundle' => 'opinion',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 7,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'body',
+      'label' => 'Body',
+      'required' => 0,
+      'settings' => array(
+        'display_summary' => 0,
+        'text_processing' => '1',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'rows' => '20',
+          'summary_rows' => 5,
+        ),
+        'type' => 'text_textarea_with_summary',
+        'weight' => '8',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-opinion-field_global_id'
+  $fields['node-opinion-field_global_id'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_global_id',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
+        ),
+      ),
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
+        ),
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '500',
+      ),
+      'translatable' => '0',
+      'type' => 'text',
+    ),
+    'field_instance' => array(
+      'bundle' => 'opinion',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => 8,
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => 0,
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_global_id',
+      'label' => 'Global id',
+      'required' => 0,
+      'settings' => array(
+        'text_processing' => '0',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 1,
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '1',
+      ),
+    ),
+  );
+
   // Exported field: 'node-opinion-field_language'
   $fields['node-opinion-field_language'] = array(
     'field_config' => array(
@@ -61,7 +199,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '3',
+        'weight' => '4',
       ),
     ),
   );
@@ -136,7 +274,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'options',
         'settings' => array(),
         'type' => 'options_select',
-        'weight' => '4',
+        'weight' => '5',
       ),
     ),
   );
@@ -204,7 +342,7 @@ function wiki9999_opinion_field_default_fields() {
           'display_label' => 0,
         ),
         'type' => 'options_onoff',
-        'weight' => '6',
+        'weight' => '7',
       ),
     ),
   );
@@ -260,7 +398,7 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '2',
+        'weight' => '3',
       ),
     ),
   );
@@ -334,7 +472,7 @@ function wiki9999_opinion_field_default_fields() {
           'size' => 60,
         ),
         'type' => 'taxonomy_autocomplete',
-        'weight' => '5',
+        'weight' => '6',
       ),
     ),
   );
@@ -390,14 +528,16 @@ function wiki9999_opinion_field_default_fields() {
         'module' => 'token_field',
         'settings' => array(),
         'type' => 'token_field',
-        'weight' => '1',
+        'weight' => '2',
       ),
     ),
   );
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Body');
   t('Free tagging');
+  t('Global id');
   t('Language');
   t('Legal rights');
   t('Promote');
