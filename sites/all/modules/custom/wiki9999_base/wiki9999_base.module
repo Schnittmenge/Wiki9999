@@ -3,4 +3,4 @@
  * @file
  */
 
-// Drupal needs this blank file.
+include_once 'wiki9999_base.features.inc';
