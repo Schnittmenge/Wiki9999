@@ -1,13 +1,14 @@
 <?php
 
 /**
- * Implements hook_node_view()
+ * Implements hook_node_view().
  */
 function wiki9999_misc_node_view($node) {
+  // @TODO: Use http://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_storage_write/7
   // Wenn eine Node des Typs "topic" gespeichert wurde...
-  if($node->type == 'topic') {
+  if ($node->type == 'topic') {
     // Wir speichern uns das Topic in eine Variable. http(s):// loeschen wir.
-    $topic = 'wiki9999-' . str_replace(array('https://', 'http://'), array('', ''), $GLOBALS['base_url'] ) . '/node/' . $node->nid . '-' . $node->uid . '-' . $node->created;
+    $topic = 'wiki9999-' . str_replace(array('https://', 'http://'), array('', ''), $GLOBALS['base_url']) . '/node/' . $node->nid . '-' . $node->uid . '-' . $node->created;
 
     $vid = db_select('taxonomy_vocabulary', 'tv')
       ->fields('tv', array('vid'))
@@ -15,7 +16,7 @@ function wiki9999_misc_node_view($node) {
       ->execute()
       ->fetchField();
 
-        // Wir bauen uns einen Term-Array auf
+    // Wir bauen uns einen Term-Array auf
     $term = array(
       // Id des Vokabulars 'topic-id-taxonomy'.
       'vid' => $vid,
@@ -27,7 +28,7 @@ function wiki9999_misc_node_view($node) {
     $term_exists = (bool) $term_exists;
 
     // Falls der Term noch nicht existiert, legen wir ihn an.
-    if(!$term_exists) {
+    if (!$term_exists) {
       taxonomy_term_save((object) $term);
     }
 
@@ -38,17 +39,17 @@ function wiki9999_misc_node_view($node) {
     // Wir setzen eine Variable, in welcher spaeter steht, ob die Node einen Term hat.
     $node_has_topic_term = FALSE;
 
-    if(isset($node->field_topic_id_taxonomy[$node->language])) {
-      foreach($node->field_topic_id_taxonomy[$node->language] as $topic_term) {
+    if (isset($node->field_topic_id_taxonomy[$node->language])) {
+      foreach ($node->field_topic_id_taxonomy[$node->language] as $topic_term) {
         // Falls es bereits einen Term mit dem $topic gibt...
-        if($topic_term['tid'] == $saved_term->tid) {
+        if ($topic_term['tid'] == $saved_term->tid) {
           $node_has_topic_term = TRUE;
         }
       }
     }
 
     // Wenn die Node noch nicht das $topic als Term hat...
-    if(!$node_has_topic_term) {
+    if (!$node_has_topic_term) {
       // ... setzen wir manuell den Term in das Node-Objekt...
       $node->field_topic_id_taxonomy = array();
       // @TODO: Check why $node->language doesn't work!
@@ -56,10 +57,9 @@ function wiki9999_misc_node_view($node) {
       // ... und speichern die Node.
       node_save($node);
     }
-
   }
 
-  if($node->type == 'opinion' || $node->type == 'proposal' || $node->type == 'standpoint') {
+  if ($node->type == 'opinion' || $node->type == 'proposal' || $node->type == 'standpoint') {
     // Wir speichern uns die Topic id in eine Variable.
     // @TODO: Check why we cannot use $node->language here.
     $topic_id_tid = $node->field_topic_id_taxonomy['und'][0]['tid'];
@@ -69,18 +69,155 @@ function wiki9999_misc_node_view($node) {
       ->execute()
       ->fetchField();
     // Wir speichern uns die Global id in eine Variable. http(s):// loeschen wir.
-    $global_id = $topic_id . '-' . str_replace(array('https://', 'http://'), array('', ''), $GLOBALS['base_url'] ) . '/node/' . $node->nid . '-' . $node->type;
+    $global_id = $topic_id . '-' . str_replace(array('https://', 'http://'), array('', ''), $GLOBALS['base_url']) . '/node/' . $node->nid . '-' . $node->type;
 
     $node_has_global_id = FALSE;
 
     // Wenn die Node noch nicht das $topic als Term hat...
-    if(!$node_has_global_id) {
+    if (!$node_has_global_id) {
       // ... setzen wir manuell den Term in das Node-Objekt...
       // @TODO: Check why $node->language cannot be used here.
       $node->field_global_id['und'][] = array('value' => $global_id);
       // ... und speichern die Node.
       node_save($node);
     }
-
   }
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function wiki9999_misc_block_info() {
+  $blocks = array();
+
+  $blocks['wiki9999_topic_opinion_link'] = array(
+    'info' => t('Wiki9999 topic opinion link'),
+    'region' => 'top_first',
+    'status' => TRUE,
+  );
+
+  $blocks['wiki9999_topic_standpoint_link'] = array(
+    'info' => t('Wiki9999 topic standpoint link'),
+    'region' => 'top_middle',
+    'status' => TRUE,
+  );
+
+  $blocks['wiki9999_topic_proposal_link'] = array(
+    'info' => t('Wiki9999 topic proposal link'),
+    'region' => 'top_last',
+    'status' => TRUE,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function wiki9999_misc_block_view($delta = '') {
+  $mgo = menu_get_object();
+  switch ($delta) {
+    case 'wiki9999_topic_opinion_link':
+      $block['content'] = _wiki9999_discussion_link('opinion', $mgo->nid, $GLOBALS['user']->uid);
+      break;
+    case 'wiki9999_topic_standpoint_link':
+      $block['content'] = _wiki9999_discussion_link('standpoint', $mgo->nid);
+      break;
+    case 'wiki9999_topic_proposal_link':
+      $block['content'] = _wiki9999_discussion_link('proposal', $mgo->nid);
+      break;
+  }
+
+  return $block;
+}
+
+function _wiki9999_get_topic_id($topic_nid) {
+  static $topic_id = array();
+  $topic_node = node_load($topic_nid);
+  if (!$topic_id) {
+    $topic_id_tid = $topic_node->field_topic_id_taxonomy['und'][0]['tid'];
+    $topic_id_name = db_query('SELECT name FROM {taxonomy_term_data} WHERE tid = :tid', array(':tid' => $topic_id_tid));
+    $topic_id = array('tid' => $topic_id_tid, 'name' => $topic_id_name);
+  }
+  return $topic_id;
+}
+
+function _wiki9999_get_term_nodes($tid, $vid = 'topic_id_taxonomy', $types = array('opinion', 'proposal', 'standpoint')) {
+  $query = db_select('node', 'n');
+  $query->fields('n', array('nid', 'uid', 'type'));
+  $query->leftJoin('taxonomy_index', 'ti', 'ti.nid = n.nid');
+  $query->leftJoin('taxonomy_term_data', 'ttd', 'ttd.tid = ti.tid');
+  $query->leftJoin('taxonomy_vocabulary', 'tv', 'tv.vid = ttd.vid');
+  $query->condition('ttd.tid', $tid);
+  $query->condition('tv.vid', $vid);
+  $query->condition('n.status', 1);
+  $query->addTag('wiki9999_discussion_nodes');
+
+  $condition = db_or();
+  foreach ($types as $type) {
+    $condition->condition('n.type', $type);
+  }
+  $query->condition($condition);
+  
+  $result = $query->execute()->fetchAssoc();
+  
+  dpm($result);
+
+  $results = array();
+
+  if (!empty($result)) {
+    foreach ($result as $record) {
+      $results[$record['type']][] = array(
+        'nid' => $record['nid'],
+        'uid' => $record['uid'],
+      );
+    }
+  }
+
+  return $results;
+}
+
+/**
+ * @param type $type
+ *   Type of the discussion.
+ * @param type $topic_nid
+ *   Id of the topic node.
+ */
+function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
+  $brief_url = $GLOBALS['base_url'];
+  $topic_id = _wiki9999_get_topic_id($topic_nid);
+  $topic_id_tid = $topic_id['tid'];
+  $discussions = _wiki9999_get_term_nodes($topic_id_tid);
+  #dpm($discussions);
+
+  $content = '';
+
+  /*  switch ($type) {
+    case 'opinion':
+    // One user can create x opinions
+    // @TODO: Check whether user has created opinion
+    $opinion_nid = 2;
+    if (!$opinion_nid) {
+    $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
+    }
+    else {
+    $content = l(t('Edit your opinion'), "node/$opinion_nid/edit", array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
+    }
+    break;
+    case 'standpoint':
+    //
+
+    break;
+    case 'proposal':
+
+    break;
+    } */
+
+  return '';
+
+//Write your opinion - Edit your opinion
+//
+//Write the standpoint of this website - Edit the standpoint of this website
+//
+//Write a proposal for a joint response - Edit the proposal for a joint response
 }
