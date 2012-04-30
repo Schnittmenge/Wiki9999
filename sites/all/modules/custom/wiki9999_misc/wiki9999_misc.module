@@ -52,7 +52,6 @@ function wiki9999_misc_node_view($node) {
     if (!$node_has_topic_term) {
       // ... setzen wir manuell den Term in das Node-Objekt...
       $node->field_topic_id_taxonomy = array();
-      // @TODO: Check why $node->language doesn't work!
       $node->field_topic_id_taxonomy['und'][] = array('tid' => $saved_term->tid, 'taxonomy_term' => $saved_term);
       // ... und speichern die Node.
       node_save($node);
@@ -61,7 +60,6 @@ function wiki9999_misc_node_view($node) {
 
   if ($node->type == 'opinion' || $node->type == 'proposal' || $node->type == 'standpoint') {
     // Wir speichern uns die Topic id in eine Variable.
-    // @TODO: Check why we cannot use $node->language here.
     $topic_id_tid = (isset($node->field_topic_id_taxonomy['und'][0]['tid'])) ? $node->field_topic_id_taxonomy['und'][0]['tid'] : 0;
     $topic_id = db_select('taxonomy_term_data', 'ttd')
       ->fields('ttd', array('name'))
@@ -76,7 +74,6 @@ function wiki9999_misc_node_view($node) {
     // Wenn die Node noch nicht das $topic als Term hat...
     if (!$node_has_global_id) {
       // ... setzen wir manuell den Term in das Node-Objekt...
-      // @TODO: Check why $node->language cannot be used here.
       $node->field_global_id['und'][] = array('value' => $global_id);
       // ... und speichern die Node.
       node_save($node);
@@ -90,6 +87,7 @@ function wiki9999_misc_node_view($node) {
 function wiki9999_misc_block_info() {
   $blocks = array();
 
+  // This block contains
   $blocks['wiki9999_topic_opinion_link'] = array(
     'info' => t('Wiki9999 topic opinion link'),
     'region' => 'top_first',
@@ -116,7 +114,7 @@ function wiki9999_misc_block_info() {
  */
 function wiki9999_misc_block_view($delta = '') {
   $mgo = menu_get_object();
-  if ($mgo) {
+  if ($mgo && $mgo->type == 'topic') {
     switch ($delta) {
       case 'wiki9999_topic_opinion_link':
         $block['content'] = _wiki9999_discussion_link('opinion', $mgo->nid, $GLOBALS['user']->uid);
@@ -200,45 +198,55 @@ function _wiki9999_get_term_nodes($tid, $vid = 'topic_id_taxonomy', $types = arr
 function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
   $base_url = $GLOBALS['base_url'];
   $brief_url_parsed = parse_url($base_url);
+  // We remove the protocol (http / https) from the base url
   $brief_url = str_replace($brief_url_parsed['scheme'] . '://', '', $base_url);
   $topic_id = _wiki9999_get_topic_id($topic_nid);
   $topic_id = $topic_id['tid'];
-  $topic_id_tid = $topic_id['tid'];
-  $discussions = _wiki9999_get_term_nodes($topic_id_tid);
+  $discussions = _wiki9999_get_term_nodes($topic_id);
 
   $content = '';
 
   switch ($type) {
     case 'opinion':
-      // One user can create x opinions
       // @TODO: Check whether user has created opinion
       $opinions = isset($discussions[$type]) ? $discussions[$type] : array();
       $opinion_nid = isset($opinions[0]['nid']) ? $opinions[0]['nid'] : 0;
       if (!$opinion_nid) {
-        $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id_tid, 'destination' => $_GET['q'])));
+        $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id, 'destination' => $_GET['q'])));
       }
       else {
         $content = l(t('Edit your opinion'), "node/$opinion_nid/edit", array('query' => array('destination' => $_GET['q'])));
       }
       break;
     case 'standpoint':
+      // Here we store a boolean whether this site has already a standpoint.
       $site_has_standpoint = FALSE;
+      // We store all existing standpoints in an array.
       $standpoints = isset($discussions[$type]) ? $discussions[$type] : array();
+      // We loop them...
       foreach ($standpoints as $standpoint) {
+        // We load the current standpoints
         $node = node_load($standpoint['nid']);
+        // We're getting the field_publisher field form the node.
         $publisher = field_get_items('node', $node, 'field_publisher');
+        // We store the token field which contains the publisher website.
         $publisher = (isset($publisher[0]['value_token_filtered'])) ? $publisher[0]['value_token_filtered'] : '';
 
         // Break when a standpoint from this site already exists.
         if ($publisher == $brief_url) {
+          // put an edit link into a variable
           $content = l(t('Edit the standpoint of this site'), 'node/' . $standpoint['nid'] . '/edit', array('query' => array('destination' => $_GET['q'])));
+          // We determined that the site has a standpoint.
           $site_has_standpoint = TRUE;
+          // We can break now because one site can only have one proposal per topic.
           break;
         }
       }
 
+      // When no proposals from this site and topic were determined we put
+      // a link into the content var which links to the add standpoint page.
       if (!$site_has_standpoint) {
-        $content = l(t('Write the standpoint of this website'), 'node/add/standpoint', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id_tid, 'destination' => $_GET['q'])));
+        $content = l(t('Write the standpoint of this website'), 'node/add/standpoint', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id, 'destination' => $_GET['q'])));
       }
 
       break;
@@ -259,7 +267,7 @@ function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
       }
 
       if (!$site_has_proposal) {
-        $content = l(t('Write a proposal for a joint response'), 'node/add/proposal', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id_tid, 'destination' => $_GET['q'])));
+        $content = l(t('Write a proposal for a joint response'), 'node/add/proposal', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id, 'destination' => $_GET['q'])));
       }
 
       break;

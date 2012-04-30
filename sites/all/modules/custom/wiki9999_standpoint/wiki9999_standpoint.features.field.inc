@@ -285,43 +285,42 @@ function wiki9999_standpoint_field_default_fields() {
   $fields['node-standpoint-field_promote'] = array(
     'field_config' => array(
       'active' => '1',
-      'cardinality' => '1',
+      'cardinality' => '-1',
       'deleted' => '0',
       'entity_types' => array(),
       'field_name' => 'field_promote',
-      'foreign keys' => array(),
-      'indexes' => array(
-        'value' => array(
-          0 => 'value',
+      'foreign keys' => array(
+        'format' => array(
+          'columns' => array(
+            'format' => 'format',
+          ),
+          'table' => 'filter_format',
         ),
       ),
-      'module' => 'list',
-      'settings' => array(
-        'allowed_values' => array(
-          0 => '0',
-          1 => '1',
+      'indexes' => array(
+        'format' => array(
+          0 => 'format',
         ),
-        'allowed_values_function' => '',
+      ),
+      'module' => 'text',
+      'settings' => array(
+        'max_length' => '255',
       ),
       'translatable' => '0',
-      'type' => 'list_boolean',
+      'type' => 'text',
     ),
     'field_instance' => array(
       'bundle' => 'standpoint',
-      'default_value' => array(
-        0 => array(
-          'value' => '0',
-        ),
-      ),
+      'default_value' => NULL,
       'deleted' => '0',
-      'description' => 'Others can give their attention to this content',
+      'description' => '',
       'display' => array(
         'default' => array(
           'label' => 'above',
-          'module' => 'list',
+          'module' => 'text',
           'settings' => array(),
-          'type' => 'list_default',
-          'weight' => 6,
+          'type' => 'text_default',
+          'weight' => 10,
         ),
         'teaser' => array(
           'label' => 'above',
@@ -333,16 +332,19 @@ function wiki9999_standpoint_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_promote',
       'label' => 'Promote',
-      'required' => 1,
+      'required' => 0,
       'settings' => array(
+        'text_processing' => '0',
         'user_register_form' => FALSE,
       ),
       'widget' => array(
         'active' => 1,
-        'module' => 'options',
-        'settings' => array(),
-        'type' => 'options_buttons',
-        'weight' => '8',
+        'module' => 'text',
+        'settings' => array(
+          'size' => '60',
+        ),
+        'type' => 'text_textfield',
+        'weight' => '11',
       ),
     ),
   );
@@ -534,7 +536,7 @@ function wiki9999_standpoint_field_default_fields() {
       'entity_type' => 'node',
       'field_name' => 'field_topic_id_taxonomy',
       'label' => 'Topic id',
-      'required' => 0,
+      'required' => 1,
       'settings' => array(
         'user_register_form' => FALSE,
       ),
@@ -611,7 +613,6 @@ function wiki9999_standpoint_field_default_fields() {
   t('Global id');
   t('Language');
   t('Legal rights');
-  t('Others can give their attention to this content');
   t('Promote');
   t('Publisher homepage');
   t('Tags');
