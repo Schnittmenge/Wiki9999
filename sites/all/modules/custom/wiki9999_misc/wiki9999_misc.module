@@ -62,7 +62,7 @@ function wiki9999_misc_node_view($node) {
   if ($node->type == 'opinion' || $node->type == 'proposal' || $node->type == 'standpoint') {
     // Wir speichern uns die Topic id in eine Variable.
     // @TODO: Check why we cannot use $node->language here.
-    $topic_id_tid = $node->field_topic_id_taxonomy['und'][0]['tid'];
+    $topic_id_tid = (isset($node->field_topic_id_taxonomy['und'][0]['tid'])) ? $node->field_topic_id_taxonomy['und'][0]['tid'] : 0;
     $topic_id = db_select('taxonomy_term_data', 'ttd')
       ->fields('ttd', array('name'))
       ->condition('tid', $topic_id_tid)
@@ -198,7 +198,9 @@ function _wiki9999_get_term_nodes($tid, $vid = 'topic_id_taxonomy', $types = arr
  *   Id of the topic node.
  */
 function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
-  $brief_url = $GLOBALS['base_url'];
+  $base_url = $GLOBALS['base_url'];
+  $brief_url_parsed = parse_url($base_url);
+  $brief_url = str_replace($brief_url_parsed['scheme'] . '://', '', $base_url);
   $topic_id = _wiki9999_get_topic_id($topic_nid);
   $topic_id = $topic_id['tid'];
   $topic_id_tid = $topic_id['tid'];
@@ -213,36 +215,55 @@ function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
       $opinions = isset($discussions[$type]) ? $discussions[$type] : array();
       $opinion_nid = isset($opinions[0]['nid']) ? $opinions[0]['nid'] : 0;
       if (!$opinion_nid) {
-        $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
+        $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id_tid, 'destination' => $_GET['q'])));
       }
       else {
-        $content = l(t('Edit your opinion'), "node/$opinion_nid/edit", array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
+        $content = l(t('Edit your opinion'), "node/$opinion_nid/edit", array('query' => array('destination' => $_GET['q'])));
       }
       break;
     case 'standpoint':
+      $site_has_standpoint = FALSE;
       $standpoints = isset($discussions[$type]) ? $discussions[$type] : array();
-      dpm($standpoints);
-      dpm($_GLOBALS);
-      foreach($standpoints as $standpoint) {
+      foreach ($standpoints as $standpoint) {
         $node = node_load($standpoint['nid']);
-        dpm($node->field_publisher['und'][0]['value_token_filtered'] . ' == ' . $GLOBALS['base_url']);
+        $publisher = field_get_items('node', $node, 'field_publisher');
+        $publisher = (isset($publisher[0]['value_token_filtered'])) ? $publisher[0]['value_token_filtered'] : '';
+
+        // Break when a standpoint from this site already exists.
+        if ($publisher == $brief_url) {
+          $content = l(t('Edit the standpoint of this site'), 'node/' . $standpoint['nid'] . '/edit', array('query' => array('destination' => $_GET['q'])));
+          $site_has_standpoint = TRUE;
+          break;
+        }
       }
-      
-      dpm($GLOBALS);
-      $content = '';
+
+      if (!$site_has_standpoint) {
+        $content = l(t('Write the standpoint of this website'), 'node/add/standpoint', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id_tid, 'destination' => $_GET['q'])));
+      }
+
       break;
     case 'proposal':
+      $site_has_proposal = FALSE;
       $proposals = isset($discussions[$type]) ? $discussions[$type] : array();
+      foreach ($proposals as $proposal) {
+        dpm($proposal);
+        $node = node_load($proposal['nid']);
+        $publisher = field_get_items('node', $node, 'field_publisher');
+        $publisher = (isset($publisher[0]['value_token_filtered'])) ? $publisher[0]['value_token_filtered'] : '';
+        // Break when a proposal from this site already exists.
+        if ($publisher == $brief_url) {
+          $content = l(t('Edit the proposal for a joint response'), 'node/' . $proposal['nid'] . '/edit', array('query' => array('destination' => $_GET['q'])));
+          $site_has_proposal = TRUE;
+          break;
+        }
+      }
 
-      $content = '';
+      if (!$site_has_proposal) {
+        $content = l(t('Write a proposal for a joint response'), 'node/add/proposal', array('query' => array('edit[field_topic_id_taxonomy][und]' => $topic_id_tid, 'destination' => $_GET['q'])));
+      }
+
       break;
   }
 
   return $content;
-
-//Write your opinion - Edit your opinion
-//
-//Write the standpoint of this website - Edit the standpoint of this website
-//
-//Write a proposal for a joint response - Edit the proposal for a joint response
 }
