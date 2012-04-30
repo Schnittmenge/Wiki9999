@@ -116,19 +116,22 @@ function wiki9999_misc_block_info() {
  */
 function wiki9999_misc_block_view($delta = '') {
   $mgo = menu_get_object();
-  switch ($delta) {
-    case 'wiki9999_topic_opinion_link':
-      $block['content'] = _wiki9999_discussion_link('opinion', $mgo->nid, $GLOBALS['user']->uid);
-      break;
-    case 'wiki9999_topic_standpoint_link':
-      $block['content'] = _wiki9999_discussion_link('standpoint', $mgo->nid);
-      break;
-    case 'wiki9999_topic_proposal_link':
-      $block['content'] = _wiki9999_discussion_link('proposal', $mgo->nid);
-      break;
+  if ($mgo) {
+    switch ($delta) {
+      case 'wiki9999_topic_opinion_link':
+        $block['content'] = _wiki9999_discussion_link('opinion', $mgo->nid, $GLOBALS['user']->uid);
+        break;
+      case 'wiki9999_topic_standpoint_link':
+        $block['content'] = _wiki9999_discussion_link('standpoint', $mgo->nid);
+        break;
+      case 'wiki9999_topic_proposal_link':
+        $block['content'] = _wiki9999_discussion_link('proposal', $mgo->nid);
+        break;
+    }
+    return $block;
   }
 
-  return $block;
+  return '';
 }
 
 function _wiki9999_get_topic_id($topic_nid) {
@@ -142,14 +145,27 @@ function _wiki9999_get_topic_id($topic_nid) {
   return $topic_id;
 }
 
+/**
+ *
+ * @param int $tid
+ *   Contains the term id.
+ * @param string $vid
+ *   Contains the machine readable name of the vocabulary.
+ * @param array $types
+ *   Contains an array with all content types you want. 
+ * @return array 
+ *   Contains an array with all nodes grouped by type.
+ */
 function _wiki9999_get_term_nodes($tid, $vid = 'topic_id_taxonomy', $types = array('opinion', 'proposal', 'standpoint')) {
+  //@TODO: Add caching!
+
   $query = db_select('node', 'n');
   $query->fields('n', array('nid', 'uid', 'type'));
   $query->leftJoin('taxonomy_index', 'ti', 'ti.nid = n.nid');
   $query->leftJoin('taxonomy_term_data', 'ttd', 'ttd.tid = ti.tid');
   $query->leftJoin('taxonomy_vocabulary', 'tv', 'tv.vid = ttd.vid');
   $query->condition('ttd.tid', $tid);
-  $query->condition('tv.vid', $vid);
+  $query->condition('tv.machine_name', $vid);
   $query->condition('n.status', 1);
   $query->addTag('wiki9999_discussion_nodes');
 
@@ -158,15 +174,13 @@ function _wiki9999_get_term_nodes($tid, $vid = 'topic_id_taxonomy', $types = arr
     $condition->condition('n.type', $type);
   }
   $query->condition($condition);
-  
-  $result = $query->execute()->fetchAssoc();
-  
-  dpm($result);
+
+  $result = $query->execute();
 
   $results = array();
 
   if (!empty($result)) {
-    foreach ($result as $record) {
+    while ($record = $result->fetchAssoc()) {
       $results[$record['type']][] = array(
         'nid' => $record['nid'],
         'uid' => $record['uid'],
@@ -186,34 +200,45 @@ function _wiki9999_get_term_nodes($tid, $vid = 'topic_id_taxonomy', $types = arr
 function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
   $brief_url = $GLOBALS['base_url'];
   $topic_id = _wiki9999_get_topic_id($topic_nid);
+  $topic_id = $topic_id['tid'];
   $topic_id_tid = $topic_id['tid'];
   $discussions = _wiki9999_get_term_nodes($topic_id_tid);
-  #dpm($discussions);
 
   $content = '';
 
-  /*  switch ($type) {
+  switch ($type) {
     case 'opinion':
-    // One user can create x opinions
-    // @TODO: Check whether user has created opinion
-    $opinion_nid = 2;
-    if (!$opinion_nid) {
-    $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
-    }
-    else {
-    $content = l(t('Edit your opinion'), "node/$opinion_nid/edit", array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
-    }
-    break;
+      // One user can create x opinions
+      // @TODO: Check whether user has created opinion
+      $opinions = isset($discussions[$type]) ? $discussions[$type] : array();
+      $opinion_nid = isset($opinions[0]['nid']) ? $opinions[0]['nid'] : 0;
+      if (!$opinion_nid) {
+        $content = l(t('Write your opinion'), 'node/add/opinion', array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
+      }
+      else {
+        $content = l(t('Edit your opinion'), "node/$opinion_nid/edit", array('query' => array('[field_topic_id_taxonomy[und]]' => $topic_id)));
+      }
+      break;
     case 'standpoint':
-    //
-
-    break;
+      $standpoints = isset($discussions[$type]) ? $discussions[$type] : array();
+      dpm($standpoints);
+      dpm($_GLOBALS);
+      foreach($standpoints as $standpoint) {
+        $node = node_load($standpoint['nid']);
+        dpm($node->field_publisher['und'][0]['value_token_filtered'] . ' == ' . $GLOBALS['base_url']);
+      }
+      
+      dpm($GLOBALS);
+      $content = '';
+      break;
     case 'proposal':
+      $proposals = isset($discussions[$type]) ? $discussions[$type] : array();
 
-    break;
-    } */
+      $content = '';
+      break;
+  }
 
-  return '';
+  return $content;
 
 //Write your opinion - Edit your opinion
 //
