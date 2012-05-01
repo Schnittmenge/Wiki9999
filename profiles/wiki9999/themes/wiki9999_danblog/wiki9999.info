@@ -1,8 +1,8 @@
-; $Id: danland.info,v 1.9.2.3 2010/11/25 01:16:24 danprobo Exp $
+name = wiki9999_danblog
+description = Wiki9999_danblog is a danblog sub theme. Danblag is a Danland sub theme. Danland with no frontpage image banner and slideshow.
+base theme = danblog
+stylesheets[all][] = custom.css
 
-name = wiki9999_danland
-description = Drupal Theme provided by <a href="http://www.danetsoft.com">Danetsoft</a> developed by <a href="http://www.danpros.com">Danang Probo Sayekti</a> inspired by <a href="http://www.maksimer.no">Maksimer</a>. Adapted vor Wiki9999 project
-engine = phptemplate
 stylesheets[all][] = style.css
 ;stylesheets[all][] = local.css
 regions[top_first] = Top first
@@ -28,15 +28,5 @@ regions[bottom_3] = Bottom 3
 regions[bottom_4] = Bottom 4
 regions[footer] = Footer
 regions[page_bottom] = Page bottom
+
 core = "7.x"
-
-scripts[] = scripts/hoverIntent.js
-scripts[] = scripts/superfish.js
-
-
-; Information added by drupal.org packaging script on 2011-01-06
-version = "7.x-1.0"
-core = "7.x"
-project = "danland"
-datestamp = "1294312858"
-
