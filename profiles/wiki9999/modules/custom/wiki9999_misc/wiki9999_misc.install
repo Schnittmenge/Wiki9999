@@ -1,9 +1,14 @@
 <?php
 
 function wiki9999_misc_install() {
-
-  drupal_set_message(t("You need to add the term @term to the vocabulary @voc.", array('@term' => 'CC BY-SA', '@voc' => 'legal_rights_taxonomy')));
   $name = 'CC BY-SA';
+
+  $vocabulary = array(
+    'name' => t('Legal rights'),
+    'machine_name' => 'legal_rights_taxonomy',
+  );
+
+  taxonomy_vocabulary_save((object) $vocabulary);
 
   $vid = db_select('taxonomy_vocabulary', 'tv')
     ->fields('tv', array('vid'))
@@ -11,19 +16,15 @@ function wiki9999_misc_install() {
     ->execute()
     ->fetchField();
 
-  // Wir bauen uns einen Term-Array auf
-  $term = array(
-    // Id des Vokabulars 'legal_rights_taxonomy'.
-    'vid' => $vid,
-    'name' => $name,
-  );
+  if ($vid) {
 
-  // Wir gucken ob es den Term schon gibt, und speichern uns die Anzahl als Boolean (TRUE oder FALSE).
-  $term_exists = db_query('SELECT name FROM {taxonomy_term_data} WHERE name = :topic', array(':topic' => $name))->rowCount();
-  $term_exists = (bool) $term_exists;
+    // Wir bauen uns einen Term-Array auf
+    $term = array(
+      // Id des Vokabulars 'legal_rights_taxonomy'.
+      'vid' => $vid,
+      'name' => $name,
+    );
 
-  // Falls der Term noch nicht existiert, legen wir ihn an.
-  if(!$term_exists) {
     taxonomy_term_save((object) $term);
     drupal_set_message(t('@term was added.', array('@term' => $name)));
   }
