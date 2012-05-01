@@ -1,7 +1,29 @@
 <div <?php print danland_page_class($page['sidebar_first'], $page['sidebar_second']); ?>>
 <div id="header">
 <div id="header-wrapper">
-	<?php if ($logo): ?> 
+	<?php if($page['top_first'] || $page['top_middle'] || $page['top_last']) : ?>
+    <div style="clear:both"></div>
+    <div id="top-teaser" class="in<?php print (bool) $page['top_first'] + (bool) $page['top_middle'] + (bool) $page['top_last']; ?>">
+          <?php if($page['top_first']) : ?>
+          <div class="column A">
+            <?php print render ($page['top_first']); ?>
+          </div>
+          <?php endif; ?>
+          <?php if($page['top_middle']) : ?>
+          <div class="column B">
+            <?php print render ($page['top_middle']); ?>
+          </div>
+          <?php endif; ?>
+          <?php if($page['top_last']) : ?>
+          <div class="column C">
+            <?php print render ($page['top_last']); ?>
+          </div>
+          <?php endif; ?>
+      <div style="clear:both"></div>
+    </div> <!-- end bottom first etc. -->
+    <?php endif; ?>
+<?php if ($logo): ?> 
+
 		<div id="logo-wrapper">
 			<div class="logo">
 				<a href="<?php print $base_path ?>" title="<?php print t('Home') ?>"><img src="<?php print $logo ?>" alt="<?php print t('Home') ?>" /></a>
@@ -42,28 +64,6 @@
 		</div>
 	<?php endif; ?>
 
-      </div><!-- end header-wrapper -->
-</div> <!-- /header -->
-<div style="clear:both"></div>
-
-<div id="menu">
-<div id="rounded-menu-left"></div>
- <?php if ($main_menu || $page['superfish_menu']): ?>
-      <div id="<?php print $main_menu ? 'nav' : 'superfish' ; ?>">
-        <?php 
-					     if ($main_menu) {
-		          print theme('links__system_main_menu', array('links' => $main_menu));  
-				      }
-				      elseif (!empty($page['superfish_menu'])) {
-				        print render ($page['superfish_menu']);
-				      }
-        ?>
-      </div> <!-- end primary -->
-    <?php endif; ?>
-<div id="rounded-menu-right"></div>
-</div> <!-- end menu -->
-<div style="clear:both"></div>
-
  <?php if($page['preface_first'] || $page['preface_middle'] || $page['preface_last']) : ?>
     <div style="clear:both"></div>
     <div id="preface-wrapper" class="in<?php print (bool) $page['preface_first'] + (bool) $page['preface_middle'] + (bool) $page['preface_last']; ?>">
@@ -87,6 +87,29 @@
     <?php endif; ?>
 
 <div style="clear:both"></div>
+
+      </div><!-- end header-wrapper -->
+</div> <!-- /header -->
+<div style="clear:both"></div>
+
+<div id="menu">
+<div id="rounded-menu-left"></div>
+ <?php if ($main_menu || $page['superfish_menu']): ?>
+      <div id="<?php print $main_menu ? 'nav' : 'superfish' ; ?>">
+        <?php 
+					     if ($main_menu) {
+		          print theme('links__system_main_menu', array('links' => $main_menu));  
+				      }
+				      elseif (!empty($page['superfish_menu'])) {
+				        print render ($page['superfish_menu']);
+				      }
+        ?>
+      </div> <!-- end primary -->
+    <?php endif; ?>
+<div id="rounded-menu-right"></div>
+</div> <!-- end menu -->
+<div style="clear:both"></div>
+
 <div id="wrapper">
 
     <?php if ($page['sidebar_first']): ?>
@@ -200,5 +223,5 @@
 </div> <!-- end footer wrapper -->
 
 <div style="clear:both"></div>
-<div id="notice"><p>Theme by <a href="http://www.danetsoft.com">Danetsoft</a> and <a href="http://www.danpros.com">Danang Probo Sayekti</a> inspired by <a href="http://www.maksimer.no">Maksimer</a></p></div>
+<div id="notice"></div>
 </div>
