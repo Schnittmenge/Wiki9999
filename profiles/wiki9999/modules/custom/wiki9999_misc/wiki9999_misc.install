@@ -3,7 +3,7 @@
 function wiki9999_misc_install() {
 
   drupal_set_message(t("You need to add the term @term to the vocabulary @voc.", array('@term' => 'CC BY-SA', '@voc' => 'legal_rights_taxonomy')));
-  /*$name = 'CC BY-SA';
+  $name = 'CC BY-SA';
 
   $vid = db_select('taxonomy_vocabulary', 'tv')
     ->fields('tv', array('vid'))
@@ -25,5 +25,6 @@ function wiki9999_misc_install() {
   // Falls der Term noch nicht existiert, legen wir ihn an.
   if(!$term_exists) {
     taxonomy_term_save((object) $term);
-  }*/
+    drupal_set_message(t('@term was added.', array('@term' => $name)));
+  }
 }
