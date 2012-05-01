@@ -7,7 +7,7 @@
  */
 function wiki9999_install() {
   // Enable some standard blocks.
-  $default_theme = 'wiki9999_danland';
+  $default_theme = 'wiki9999';
   $values = array(
     array(
       'module' => 'system',
