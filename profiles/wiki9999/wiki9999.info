@@ -1,6 +1,5 @@
 name = Wiki9999
-description = Start with a new Wiki9999!
-version = VERSION
+description = Start with a new Wiki9999.
 core = 7.x
 dependencies[] = block
 dependencies[] = dblog
@@ -10,4 +9,3 @@ dependencies[] = wiki9999_topic
 dependencies[] = wiki9999_opinion
 dependencies[] = wiki9999_proposal
 dependencies[] = wiki9999_standpoint
-files[] = wiki9999.profile
