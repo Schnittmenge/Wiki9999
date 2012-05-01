@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implementation of hook_requirements().
+ */
+function i18n_auto_requirements($phase) {
+  // Ensure translations don't break at install time.
+  $t = get_t();
+
+  // Check if the GTranslate code is in the right place.
+  $gt_exists = FALSE;
+  $gt_exists = file_exists(drupal_get_path('module', 'i18n_auto') . '/gtranslate-api-php/GTranslate.php');
+
+  // Generate the requirements array ready for return
+  $requirements['i18n_auto'] = array(
+    'title' => $t('GTranslate PHP API'),
+    'description' => $gt_exists ? '' : $t('Without the <a href="@url">GTranslate PHP API</a> i18n auto translate cannot create any translations.', array('@url' => 'http://code.google.com/p/gtranslate-api-php/downloads/list')),
+    'value' => $gt_exists ? $t('Available') : $t('Not installed'),
+    'severity' => $gt_exists ? REQUIREMENT_OK : REQUIREMENT_WARNING,
+  );
+
+  // Return the array
+  return $requirements;
+}

@@ -6,7 +6,7 @@
 function wiki9999_misc_node_view($node) {
   // @TODO: Use http://api.drupal.org/api/drupal/modules!field!field.api.php/function/hook_field_storage_write/7
   // Wenn eine Node des Typs "topic" gespeichert wurde...
-  if ($node->type == 'topic') {
+  if ($node->type == 'topic' && $node->tnid == 0) {
     // Wir speichern uns das Topic in eine Variable. http(s):// loeschen wir.
     $topic = 'wiki9999-' . str_replace(array('https://', 'http://'), array('', ''), $GLOBALS['base_url']) . '/node/' . $node->nid . '-' . $node->uid . '-' . $node->created;
 
