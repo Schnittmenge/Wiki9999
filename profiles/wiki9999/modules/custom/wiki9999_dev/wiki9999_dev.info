@@ -1,0 +1,10 @@
+name = Development
+description = This module just enables some other modules.
+core = 7.x
+package = Wiki9999
+
+dependencies[] = admin_menu
+dependencies[] = admin_menu_toolbar
+dependencies[] = admin_devel
+dependencies[] = views_ui
+dependencies[] = field_ui

@@ -5,6 +5,7 @@ package = Wiki9999
 php = 5.2.4
 dependencies[] = features
 dependencies[] = flag
+dependencies[] = translation_helpers
 dependencies[] = rules
 dependencies[] = strongarm
 dependencies[] = taxonomy
