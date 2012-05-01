@@ -26,6 +26,7 @@ features[field][] = node-standpoint-field_tags
 features[field][] = node-standpoint-field_topic_id_taxonomy
 features[field][] = node-standpoint-field_website_source
 features[node][] = standpoint
+features[taxonomy][] = legal_rights_taxonomy
 features[taxonomy][] = tags
 features[variable][] = comment_anonymous_standpoint
 features[variable][] = comment_default_mode_standpoint
