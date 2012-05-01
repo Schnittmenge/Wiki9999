@@ -1,0 +1,184 @@
+<?php
+
+
+/**
+ * Implements hook_i18n_auto_info().
+ */
+function i18n_auto_gtranslate_i18n_auto_info() {
+  return array(
+    'name' => t('Google Translate'),
+    'module' => 'i18n_auto_gtranslate',
+    'api version' => 1,
+    'translate callback' => 'i18n_auto_gtranslate_node_translate',
+  );
+}
+
+/**
+ * Creates a translation for a Node in every enabled language.
+ */
+function i18n_auto_gtranslate_node_translate($node) {
+
+  // If this is not a source node, don't do automatic translations.
+  // TODO: actually there's no real reason for this - we could translate
+  // nodes that are non-source  too, but we'd need to look up the source
+  // node for $node->tnid.
+
+  // Do a variable check to ensure this content type should be translated.
+  // Additional check to make sure there *is* a node body - not always the case.
+  if (!$node->translation_source && variable_get('language_content_type_'. $node->type, 0) == 2 && $node->body) {
+    $node->language = i18n_get_lang(); // set language of source node to current language
+    $node->tnid = $node->nid; // source node must point to itself
+
+    // create a translation of the node for each enabled language
+    // other than the source node language
+    $languages = i18n_language_list();
+    unset($languages[$node->language]); // exclude the language of the new node
+
+    foreach ($languages as $langcode => $language) {
+      module_load_include('inc', 'node', 'node.pages'); // needed for node_object_prepare()
+
+      // Prepare the new node.
+      $new_node = (object)array();
+      node_object_prepare($new_node);
+
+      $new_node->name  = $node->name;
+      $new_node->type  = $node->type;
+      $new_node->language = $langcode;
+      $new_node->tnid = $node->nid;
+      $new_node->format = $node->format;
+      $new_node->status = $node->status;
+      // Mark the automated translation as out of date for review.
+      $new_node->translate = 1;
+      // Respect comment settings, if applicable.
+      if (module_exists('comment')) {
+        $new_node->comment = $node->comment;
+      }
+
+      // TODO: chunks of this next bit should probably be separate functions
+
+      // set our flag
+      $body_split = FALSE;
+      
+      // make sure translated body and title are empty strings
+      $tbody = '';
+      $ttitle = '';
+      
+      // if the node body is too long, split it up
+      if (strlen($node->body) > 1000) {
+        // we need to send HTML to Google to not lose formatting
+        $body_markup = check_markup($node->body);
+        // split up the string in to our array
+        $body_array = str_split($body_markup, 1000);
+        // set flag so translating logic knows we split the string
+        $body_split = TRUE;
+        // make a copy of the array for manipulating safely
+        $tmp_array = $body_array;
+        // get the number of keys
+        $tmp_keys = array_keys($tmp_array);
+        // unset the first key, we don't need it
+        unset($tmp_keys[0]);
+        
+        // cycle through remaining keys
+        foreach ($tmp_keys as $key) {
+          // find where the next real sentence ends
+          $pos = strpos($body_array[$key], '. ');
+          // complete the sentence of the previous chunk
+          $body_array[$key - 1] = $body_array[$key - 1] . substr($body_array[$key], 0, $pos + 1);
+          // get rid of the sentence fragment in the current chunk
+          $body_array[$key] = substr_replace($body_array[$key], '', 0, $pos + 1);
+        }
+      }
+      
+      // get a translation from Google
+      // @todo - this needs to be done with the Libraries API, the code has no place in the module dir.
+      require_once("gtranslate-api-php/GTranslate.php");
+      $func = $node->language . '_to_' . $langcode;
+      
+      if ($body_split) {
+        // define variables
+        $tbody_array = array();
+        $chunk_failed = FALSE;
+        
+        foreach ($body_array as $key => $chunk) {
+          try {
+            $gt = new Gtranslate;
+            $tbody_array[$key] = $gt->$func($chunk);
+          }
+          catch (GTranslateException $ge) {
+            // if there was a problem, pass the error to watchdog.
+            $message = t('From GTranslate: ') . $ge->getMessage();
+            watchdog(t('auto translate'), $message, array(), WATCHDOG_ERROR);
+            // flag chunk failure
+            $chunk_failed = TRUE;
+          }
+        }
+        
+        if ($chunk_failed) {
+          $new_node->body = $node->body;
+        }
+        else {
+          foreach ($tbody_array as $tchunk) {
+            $tbody .= $tchunk;
+          }
+          // attempt to turn mark-up back in to real line breaks
+          // TODO: I'm sure this can be nicer! See http://drupal.org/node/684340
+          $tbody = str_replace('<p>', '', $tbody);
+          $tbody = str_replace('</p>', "\n\n", $tbody);
+          $tbody = str_replace('<br>', "\n", $tbody);
+          $tbody = str_replace('<br/>', "\n", $tbody);
+          $tbody = str_replace('<br />', "\n", $tbody);
+          $new_node->body = $tbody;
+        }
+        
+      }
+      else {
+        try {
+          $gt = new Gtranslate;
+          // we need to send HTML to Google to not lose formatting
+          $body_markup = check_markup($node->body);
+          $tbody = $gt->$func($body_markup);
+          // attempt to turn mark-up back in to real line breaks
+          // TODO: I'm sure this can be nicer! See http://drupal.org/node/684340
+          $tbody = str_replace('<p>', '', $tbody);
+          $tbody = str_replace('</p>', "\n\n", $tbody);
+          $tbody = str_replace('<br>', "\n", $tbody);
+          $tbody = str_replace('<br/>', "\n", $tbody);
+          $tbody = str_replace('<br />', "\n", $tbody);
+          $new_node->body = $tbody;
+        }
+        catch (GTranslateException $ge) {
+          // if there was a problem, pass the error to watchdog.
+          $message = t('From GTranslate: ') . $ge->getMessage();
+          watchdog(t('auto translate'), $message, array(), WATCHDOG_ERROR);
+          // fall back to original node body.
+          $new_node->body = $node->body;
+        }
+      }
+
+
+      try {
+        $gt = new Gtranslate;
+        $ttitle = $gt->$func($node->title);
+        // get rid of any HTML encoded data Google might send
+        $new_node->title = html_entity_decode($ttitle, ENT_QUOTES);
+      }
+      catch (GTranslateException $ge) {
+        // if there was a problem, pass the error to watchdog.
+        $message = t('From GTranslate: ') . $ge->getMessage();
+        watchdog(t('auto translate'), $message, array(), WATCHDOG_ERROR);
+        // fall back to original title.
+        $new_node->title = $node->title;
+      }
+
+      // TODO: Look up CCK fields and cycle through and translate too.
+
+      // create the new translation node
+      node_save(node_submit($new_node));
+
+      // inform user of new translation
+      drupal_set_message(t('New translation draft with language code of %language created in node %nid.', array('%language' => $new_node->language, '%nid' => $new_node->nid)));
+    }
+    // Return outside of the foreach loop, returning too early causes attached files to be lost.
+    return array('node' => $node);
+  }
+}

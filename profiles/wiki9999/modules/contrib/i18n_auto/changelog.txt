@@ -1,0 +1,17 @@
+
+2010-01-18
+#686646/greg.harvey - Drupal 6.x code committed from http://drupal.org/project/i18n_auto_draft
+
+2008-01-09
+#159323/dman - begin support for multiple languages
+#153538/dman - check form element type against textarea during form iteration
+
+2007-06-06
+create translate menu item
+create jquery code
+add support for google translate
+add buttons to translate & revert on node edit forms
+
+2007-06-01
+write initial description of module
+set up files and directories

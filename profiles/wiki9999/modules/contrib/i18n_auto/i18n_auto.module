@@ -1,0 +1,251 @@
+<?php
+
+/*
+ * Created on 13 Jan 2010
+ *
+ * @author greg.harvey - Greg Harvey - http://www.drupaler.co.uk
+ * @file
+ * Module for providing a rule to automatically create a draft of a node
+ * in other languages when translation is enabled.
+ */
+
+/**
+ * Implements hook_action_info().
+ */
+function i18n_auto_action_info() {
+  return array(
+    'i18n_auto_node_translate_action' => array(
+      'type' => 'node',
+      'label' => t('Translate a node using the configured translation service.'),
+      'configurable' => TRUE,
+      'behavior' => array('changes_property'),
+      'triggers' => array('node_insert'),
+    ),
+  );
+}
+
+/**
+ * Function for returning list of available implementations
+ * of translation services.
+ */
+function i18n_auto_get_modules() {
+  $options = array();
+  $modules = array();
+  // Get available translation service implementations.
+  $modules = module_invoke_all('i18n_auto_info');
+  // See if we have any translation service implementations.
+  if (empty($modules)) {
+    drupal_set_message(t('No translation modules available. i18n Auto Translate cannot function.'), 'error', FALSE);
+  }
+  // Check if we have multiple implementations.
+  if (is_array($modules['module'])) {
+    foreach ($modules['module'] as $key => $module) {
+      // Check module implements the correct API version.
+      if ($modules['api version'][$key] == SDI_AD_REGIONS_API_VERSION) {
+        $options[$module] = $modules['name'][$key];
+      }
+      else {
+        drupal_set_message(t('Warning: the %module module does not use the correct API for this version of i18n Auto Translate.', array('%module' => $module)), 'error', FALSE);
+      }
+    }
+  }
+  // It is possible there will be only one translation module, so no array.
+  else {
+    // Check module implements the correct API version.
+    if ($modules['api version'] == SDI_AD_REGIONS_API_VERSION) {
+      $options[$modules['module']] = $modules['name'];
+    }
+    else {
+      drupal_set_message(t('Warning: the %module module does not use the correct API for this version of i18n Auto Translate.', array('%module' => $modules['module'])), 'error', FALSE);
+    }
+  }
+  return $options;
+}
+
+/**
+ * Admin form for the i18n_auto_node_translate_action action.
+ */
+function i18n_auto_node_translate_action_form() {
+  $form = array();
+  $modules = i18n_auto_get_modules();
+  $form['i18n_auto_module'] = array(
+    '#type' => 'select',
+    '#title' => t('Select a translation service implementation to use'),
+    '#default_value' => variable_get('i18n_auto_module', ''),
+    '#description' => t('Choose which one of the available translation service modules to use for translating nodes on this website.'),
+    '#options' => $modules,
+  );
+  return $form;
+}
+
+
+
+
+
+#########################
+# OLD CODE
+
+
+/**
+ * Implementation of hook_init().
+ */
+function i18n_auto_init() {
+  // Add the Google API so we can pull the branding and stop Google getting up tight.
+  drupal_set_html_head('<script type="text/javascript" src="http://www.google.com/jsapi"></script>');
+  // Add the Google CSS.
+  drupal_add_css(base_path() . drupal_get_path('module', 'i18n_auto') . '/google.css', 'module');
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function i18n_auto_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list' :
+      $blocks[0]['info'] = t('Google Translate branding block');
+      return $blocks;
+      break;
+    case 'view' :
+      $block = array();
+      switch ($delta) {
+        case 0:
+          $block['title'] = t('Powered by Google'); 
+          $block['content'] = theme('i18n_auto_google_block');
+          return $block;
+      }
+      break;
+  }
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function i18n_auto_theme() {
+  return array(
+    'i18n_auto_google_block' => array(
+      'arguments' => array(),
+    ),
+  );
+}
+
+/**
+ * Theme function for rendering the Google block.
+ * 
+ * Code taken from:
+ * http://code.google.com/apis/ajaxlanguage/documentation/#Branding
+ * http://www.google.com/uds/samples/language/branding.html
+ */
+function theme_i18n_auto_google_block() {
+  $output = '  <div id="google-branding"></div>
+  <script type="text/javascript"> 
+ 
+    google.load(\'language\', "1");
+    google.setOnLoadCallback(initialize);
+    function initialize() {
+      var v = {type:\'vertical\'};
+      google.language.getBranding(\'google-branding\', v);
+    }
+ 
+  </script> ';
+  return $output;
+}
+
+/**
+ * Implementation of hook_rules_action_info().
+ */
+function i18n_auto_rules_action_info() {
+  return array(
+    'i18n_auto_action_node_translate' => array(
+      'label' => t('Translate a node into every enabled language'),
+      'arguments' => array(
+        'node' => array(
+          'type' => 'node',
+          'label' => t('Content')),
+        ),
+      'module' => 'Node',
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_rules_defaults.
+ */
+function i18n_auto_rules_defaults() {
+  return array(
+    'rules' => 
+    array (
+      'rules_1' => 
+      array (
+        '#type' => 'rule',
+        '#set' => 'event_node_insert',
+        '#label' => 'Auto translate',
+        '#active' => 1,
+        '#weight' => '0',
+        '#categories' => 
+        array (
+          0 => 'i18n',
+        ),
+        '#status' => 'custom',
+        '#conditions' => 
+        array (
+          0 => 
+          array (
+            '#type' => 'condition',
+            '#settings' => 
+            array (
+              '#argument map' => 
+              array (
+                'node' => 'node',
+              ),
+            ),
+            '#name' => 'rules_condition_content_is_new',
+            '#info' => 
+            array (
+              'label' => 'Created content is new',
+              'arguments' => 
+              array (
+                'node' => 
+                array (
+                  'type' => 'node',
+                  'label' => 'Content',
+                ),
+              ),
+              'module' => 'Node',
+            ),
+            '#weight' => 0,
+          ),
+        ),
+        '#actions' => 
+        array (
+          0 => 
+          array (
+            '#weight' => 0,
+            '#info' => 
+            array (
+              'label' => 'Translate a node into every enabled language',
+              'arguments' => 
+              array (
+                'node' => 
+                array (
+                  'type' => 'node',
+                  'label' => 'Content',
+                ),
+              ),
+              'module' => 'Node',
+            ),
+            '#name' => 'i18n_auto_action_node_translate',
+            '#settings' => 
+            array (
+              '#argument map' => 
+              array (
+                'node' => 'node',
+              ),
+            ),
+            '#type' => 'action',
+          ),
+        ),
+        '#version' => 6003,
+      ),
+    ),
+  );
+}

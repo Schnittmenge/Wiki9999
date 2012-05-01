@@ -1,0 +1,15 @@
+name = Auto draft translation
+description = Creates a draft of a node in all active languages when a new node is created using pluggable translation services.
+package = Multilanguage
+core = 7.x
+
+dependencies[] = translation
+dependencies[] = i18n
+dependencies[] = actions
+
+; Information added by drupal.org packaging script on 2012-03-20
+version = "7.x-3.x-dev"
+core = "7.x"
+project = "i18n_auto"
+datestamp = "1332245945"
+
