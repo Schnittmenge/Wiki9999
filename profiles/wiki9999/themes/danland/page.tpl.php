@@ -4,31 +4,7 @@
 <div <?php print danland_page_class($page['sidebar_first'], $page['sidebar_second']); ?>>
 <div id="header">
 <div id="header-wrapper">
-	
-	<?php if($page['top_first'] || $page['top_middle'] || $page['top_last']) : ?>
-    <div style="clear:both"></div>
-    <div id="top-teaser" class="in<?php print (bool) $page['top_first'] + (bool) $page['top_middle'] + (bool) $page['top_last']; ?>">
-          <?php if($page['top_first']) : ?>
-          <div class="column A">
-            <?php print render ($page['top_first']); ?>
-          </div>
-          <?php endif; ?>
-          <?php if($page['top_middle']) : ?>
-          <div class="column B">
-            <?php print render ($page['top_middle']); ?>
-          </div>
-          <?php endif; ?>
-          <?php if($page['top_last']) : ?>
-          <div class="column C">
-            <?php print render ($page['top_last']); ?>
-          </div>
-          <?php endif; ?>
-      <div style="clear:both"></div>
-    </div> <!-- end bottom first etc. -->
-    <?php endif; ?>
-    
-
-<?php if ($logo): ?> 
+	<?php if ($logo): ?> 
 		<div id="logo-wrapper">
 			<div class="logo">
 				<a href="<?php print $base_path ?>" title="<?php print t('Home') ?>"><img src="<?php print $logo ?>" alt="<?php print t('Home') ?>" /></a>
@@ -68,8 +44,51 @@
       		      <ul><?php global $user; if ($user->uid != 0) { print '<li class="first">' .t('Logged in as '). '<a href="' .url('user/'.$user->uid). '">' .$user->name. '</a></li>'; print '<li><a href="' .url('user/logout'). '">' .t('Logout'). '</a></li>'; } else { print '<li class="first"><a href="' .url('user'). '">' .t('Login'). '</a></li>'; print '<li><a href="' .url('user/register'). '">' .t('Register'). '</a></li>'; } ?></ul>
 		</div>
 	<?php endif; ?>
-	
-	 <?php if($page['preface_first'] || $page['preface_middle'] || $page['preface_last']) : ?>
+
+      </div><!-- end header-wrapper -->
+</div> <!-- /header -->
+<div style="clear:both"></div>
+
+<div id="menu">
+<div id="rounded-menu-left"></div>
+ <?php if ($main_menu || $page['superfish_menu']): ?>
+      <div id="<?php print $main_menu ? 'nav' : 'superfish' ; ?>">
+        <?php 
+					     if ($main_menu) {
+		          print theme('links__system_main_menu', array('links' => $main_menu));  
+				      }
+				      elseif (!empty($page['superfish_menu'])) {
+				        print render ($page['superfish_menu']);
+				      }
+        ?>
+      </div> <!-- end primary -->
+    <?php endif; ?>
+<div id="rounded-menu-right"></div>
+</div> <!-- end menu -->
+<div style="clear:both"></div>
+
+<?php if($is_front): ?>
+<div id="slideshow-wrapper">
+<div class="slideshow-inner">
+<div id="slideshow-preface">
+ <?php if ($page['preface']): ?>
+          <div id="preface">
+            <?php print render ($page['preface']); ?>
+          </div><!-- end preface -->
+ <?php endif; ?>
+</div>
+<?php if ($page['highlighted']) : ?><div id="slideshow-bottom">
+<div id="mission"><?php print render ($page['highlighted']); ?></div></div><?php endif; ?>
+<div class="slideshow">
+<img src="<?php print $base_path . $directory; ?>/images/slideshows/sea.jpg" width="950" height="355" alt="slideshow 1"/>
+<img src="<?php print $base_path . $directory; ?>/images/slideshows/noon.jpg" width="950" height="355" alt="slideshow 2"/>
+<img src="<?php print $base_path . $directory; ?>/images/slideshows/snow.jpg" width="950" height="355" alt="slideshow 3"/>
+</div>
+</div>
+</div>
+<?php endif; ?>
+
+ <?php if($page['preface_first'] || $page['preface_middle'] || $page['preface_last']) : ?>
     <div style="clear:both"></div>
     <div id="preface-wrapper" class="in<?php print (bool) $page['preface_first'] + (bool) $page['preface_middle'] + (bool) $page['preface_last']; ?>">
           <?php if($page['preface_first']) : ?>
@@ -90,28 +109,6 @@
       <div style="clear:both"></div>
     </div>
     <?php endif; ?>
-    
-    <div style="clear:both"></div>
-
-<div id="menu">
-<div id="rounded-menu-left"></div>
- <?php if ($main_menu || $page['superfish_menu']): ?>
-      <div id="<?php print $main_menu ? 'nav' : 'superfish' ; ?>">
-        <?php 
-					     if ($main_menu) {
-		          print theme('links__system_main_menu', array('links' => $main_menu));  
-				      }
-				      elseif (!empty($page['superfish_menu'])) {
-				        print render ($page['superfish_menu']);
-				      }
-        ?>
-      </div> <!-- end primary -->
-    <?php endif; ?>
-<div id="rounded-menu-right"></div>
-</div> <!-- end menu -->
-
-      </div><!-- end header-wrapper -->
-</div> <!-- /header -->
 
 <div style="clear:both"></div>
 <div id="wrapper">
@@ -122,10 +119,6 @@
       </div></div> <!-- end sidebar-first -->
     <?php endif; ?>
 <div id="content">
-	
-<div style="clear:both"></div>
-
-
 			<a id="main-content"></a>
 			<?php if ($page['content_top']) : ?><div class="content-top"><?php print render ($page['content_top']); ?></div>
 			<?php endif; ?>
@@ -156,14 +149,14 @@
 
 </div> <!-- end content -->
 
-		<?php if ($page['sidebar_second']): ?>
-		     <div id="sidebar-right" class="column sidebar"><div class="section">
-		       <?php print render($page['sidebar_second']); ?>
-		     </div></div> <!-- end sidebar-second -->
-		   <?php endif; ?>
-	       <div style="clear:both"></div>
+    <?php if ($page['sidebar_second']): ?>
+      <div id="sidebar-right" class="column sidebar"><div class="section">
+        <?php print render($page['sidebar_second']); ?>
+      </div></div> <!-- end sidebar-second -->
+    <?php endif; ?>
+<div style="clear:both"></div>
+</div> <!-- end wrapper -->
 
-<!-- end wrapper -->
 
 <?php if($page['bottom_first'] || $page['bottom_middle'] || $page['bottom_last']) : ?>
     <div style="clear:both"></div>
@@ -226,21 +219,9 @@
 <div id="subnav-wrapper">
 <?php print theme('links__system_secondary_menu', array('links' => $secondary_menu, 'attributes' => array('id' => 'subnav', 'class' => array('links', 'clearfix')))); ?>
 </div>
-	<?php endif; ?>
-
-
-	<?php if ($feed_icons): ?>
-		<div class="feed-wrapper">
-			<?php print $feed_icons; ?>
-		</div>
-	<?php endif; ?>
-
-	<?php if (!$is_admin): ?>
-		<div id="authorize">
-      		      <ul><?php global $user; if ($user->uid != 0) { print '<li class="first">' .t('Logged in as '). '<a href="' .url('user/'.$user->uid). '">' .$user->name. '</a></li>'; print '<li><a href="' .url('user/logout'). '">' .t('Logout'). '</a></li>'; } else { print '<li class="first"><a href="' .url('user'). '">' .t('Login'). '</a></li>'; print '<li><a href="' .url('user/register'). '">' .t('Register'). '</a></li>'; } ?></ul>
-		</div>
-	<?php endif; ?>
-
+<?php endif; ?>
 </div> <!-- end footer wrapper -->
 
 <div style="clear:both"></div>
+<div id="notice"><p>Theme by <a href="http://www.danetsoft.com">Danetsoft</a> and <a href="http://www.danpros.com">Danang Probo Sayekti</a> inspired by <a href="http://www.maksimer.no">Maksimer</a></p></div>
+</div>

@@ -22,10 +22,10 @@ function danland_preprocess_maintenance_page(&$variables) {
   if (!$variables['db_is_active']) {
     unset($variables['site_name']);
   }
-  drupal_add_css(path_to_theme() . '/maintenance.css');
-  drupal_add_js(path_to_theme() . '/scripts/jquery.cycle.all.js');
+  drupal_add_css(drupal_get_path('theme', 'danland') . '/maintenance.css');
+  drupal_add_js(drupal_get_path('theme', 'danland') . '/scripts/jquery.cycle.all.js');
 }
 
 if (drupal_is_front_page()) {
-  drupal_add_js(path_to_theme() . '/scripts/jquery.cycle.all.js');
+  drupal_add_js(drupal_get_path('theme', 'danland') . '/scripts/jquery.cycle.all.js');
 }

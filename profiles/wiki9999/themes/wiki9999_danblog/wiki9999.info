@@ -1,0 +1,32 @@
+name = wiki9999_danblog
+description = Wiki9999_danblog is a danblog sub theme. Danblag is a Danland sub theme. Danland with no frontpage image banner and slideshow.
+base theme = danblog
+stylesheets[all][] = custom.css
+
+stylesheets[all][] = style.css
+;stylesheets[all][] = local.css
+regions[top_first] = Top first
+regions[top_middle] = Top middle
+regions[top_last] = Top last
+regions[search_box] = Search region
+regions[preface_first] = Preface first
+regions[preface_middle] = Preface middle
+regions[preface_last] = Preface last
+regions[superfish_menu] = Superfish menu
+regions[sidebar_first] = Left sidebar
+regions[sidebar_second] = Right sidebar
+regions[content_top] = Content top
+regions[help] = Help
+regions[content] = Main content
+regions[content_bottom] = Content bottom
+regions[bottom_first] = Bottom first
+regions[bottom_middle] = Bottom middle
+regions[bottom_last] = Bottom last
+regions[bottom_1] = Bottom 1
+regions[bottom_2] = Bottom 2
+regions[bottom_3] = Bottom 3
+regions[bottom_4] = Bottom 4
+regions[footer] = Footer
+regions[page_bottom] = Page bottom
+
+core = "7.x"

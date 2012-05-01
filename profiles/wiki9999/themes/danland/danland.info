@@ -1,18 +1,18 @@
 ; $Id: danland.info,v 1.9.2.3 2010/11/25 01:16:24 danprobo Exp $
 
-name = wiki9999_danland
-description = Drupal Theme provided by <a href="http://www.danetsoft.com">Danetsoft</a> developed by <a href="http://www.danpros.com">Danang Probo Sayekti</a> inspired by <a href="http://www.maksimer.no">Maksimer</a>. Adapted vor Wiki9999 project
+name = Danland
+description = Drupal Theme provided by <a href="http://www.danetsoft.com">Danetsoft</a> developed by <a href="http://www.danpros.com">Danang Probo Sayekti</a> inspired by <a href="http://www.maksimer.no">Maksimer</a>.
 engine = phptemplate
 stylesheets[all][] = style.css
 ;stylesheets[all][] = local.css
-regions[top_first] = Top first
-regions[top_middle] = Top middle
-regions[top_last] = Top last
 regions[search_box] = Search region
+regions[superfish_menu] = Superfish menu
+regions[page_top] = Page top
+regions[preface] = Preface top
+regions[highlighted] = Highlighted
 regions[preface_first] = Preface first
 regions[preface_middle] = Preface middle
 regions[preface_last] = Preface last
-regions[superfish_menu] = Superfish menu
 regions[sidebar_first] = Left sidebar
 regions[sidebar_second] = Right sidebar
 regions[content_top] = Content top
