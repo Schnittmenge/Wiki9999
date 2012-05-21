@@ -144,6 +144,29 @@
       		<?php endif; ?>
 		      <?php if ($page['content']) : ?><div class="content-middle"><?php print render ($page['content']); ?></div>
 			<?php endif; ?>
+			
+			<?php if($page['bottom_first'] || $page['bottom_middle'] || $page['bottom_last']) : ?>
+			    <div style="clear:both"></div>
+			    <div id="bottom-teaser" class="in<?php print (bool) $page['bottom_first'] + (bool) $page['bottom_middle'] + (bool) $page['bottom_last']; ?>">
+				  <?php if($page['bottom_first']) : ?>
+				  <div class="column A">
+				    <?php print render ($page['bottom_first']); ?>
+				  </div>
+				  <?php endif; ?>
+				  <?php if($page['bottom_middle']) : ?>
+				  <div class="column B">
+				    <?php print render ($page['bottom_middle']); ?>
+				  </div>
+				  <?php endif; ?>
+				  <?php if($page['bottom_last']) : ?>
+				  <div class="column C">
+				    <?php print render ($page['bottom_last']); ?>
+				  </div>
+				  <?php endif; ?>
+			      <div style="clear:both"></div>
+			    </div> <!-- end bottom first etc. -->
+			<?php endif; ?>
+			
 			<?php if ($page['content_bottom']) : ?><div class="content-bottom"><?php print render ($page['content_bottom']); ?></div>
 			<?php endif; ?>
 
@@ -156,30 +179,6 @@
     <?php endif; ?>
 <div style="clear:both"></div>
 </div> <!-- end wrapper -->
-
-
-<?php if($page['bottom_first'] || $page['bottom_middle'] || $page['bottom_last']) : ?>
-    <div style="clear:both"></div>
-    <div id="bottom-teaser" class="in<?php print (bool) $page['bottom_first'] + (bool) $page['bottom_middle'] + (bool) $page['bottom_last']; ?>">
-          <?php if($page['bottom_first']) : ?>
-          <div class="column A">
-            <?php print render ($page['bottom_first']); ?>
-          </div>
-          <?php endif; ?>
-          <?php if($page['bottom_middle']) : ?>
-          <div class="column B">
-            <?php print render ($page['bottom_middle']); ?>
-          </div>
-          <?php endif; ?>
-          <?php if($page['bottom_last']) : ?>
-          <div class="column C">
-            <?php print render ($page['bottom_last']); ?>
-          </div>
-          <?php endif; ?>
-      <div style="clear:both"></div>
-    </div> <!-- end bottom first etc. -->
-    <?php endif; ?>
-
 
  <?php if($page['bottom_1'] || $page['bottom_2'] || $page['bottom_3'] || $page['bottom_4']) : ?>
     <div style="clear:both"></div><!-- Do not touch -->

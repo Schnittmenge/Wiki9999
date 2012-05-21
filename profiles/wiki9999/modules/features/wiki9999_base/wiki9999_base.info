@@ -16,4 +16,4 @@ features[flag][] = promote
 features[rules_config][] = rules_discussion_auto_promote
 features[taxonomy][] = status_translation_taxonomy
 features[variable][] = theme_default
-features[variable][] = theme_wiki9999_danland_settings
+features[variable][] = theme_wiki9999_settings

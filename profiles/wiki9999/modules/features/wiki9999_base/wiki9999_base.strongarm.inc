@@ -20,7 +20,7 @@ function wiki9999_base_strongarm() {
   $strongarm = new stdClass();
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
-  $strongarm->name = 'theme_wiki9999_danland_settings';
+  $strongarm->name = 'theme_wiki9999_settings';
   $strongarm->value = array(
     'toggle_logo' => 0,
     'toggle_name' => 0,
@@ -38,7 +38,7 @@ function wiki9999_base_strongarm() {
     'favicon_path' => '',
     'favicon_upload' => '',
   );
-  $export['theme_wiki9999_danland_settings'] = $strongarm;
+  $export['theme_wiki9999_settings'] = $strongarm;
 
   return $export;
 }

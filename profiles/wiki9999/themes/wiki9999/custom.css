@@ -475,3 +475,20 @@ display: none;
  .feed-wrapper {
 display: none;
  }
+ 
+ #bottom-teaser {
+    width: 100%;
+    margin: 0px;
+ }
+ 
+ #bottom-teaser .block {
+    margin: 0;
+ }
+ 
+.region-bottom-first {
+    padding-right: 15px;
+ }
+ 
+ .region-bottom-last {
+    padding-left: 15px;
+ }
