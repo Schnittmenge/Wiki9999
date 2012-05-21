@@ -254,7 +254,7 @@ function _wiki9999_discussion_link($type, $topic_nid, $uid = '') {
       $site_has_proposal = FALSE;
       $proposals = isset($discussions[$type]) ? $discussions[$type] : array();
       foreach ($proposals as $proposal) {
-        dpm($proposal);
+        //dpm($proposal);
         $node = node_load($proposal['nid']);
         $publisher = field_get_items('node', $node, 'field_publisher');
         $publisher = (isset($publisher[0]['value_token_filtered'])) ? $publisher[0]['value_token_filtered'] : '';
