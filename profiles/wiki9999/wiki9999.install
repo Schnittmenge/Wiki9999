@@ -63,8 +63,8 @@ function wiki9999_install() {
   filter_format_save($full_html_format);
 
   // Enable some standard blocks.
-  $default_theme = variable_get('theme_default', 'wiki9999');
-  $blocks = array(
+  $default_theme = 'wiki9999';
+  $values = array(
     array(
       'module' => 'system',
       'delta' => 'main',
