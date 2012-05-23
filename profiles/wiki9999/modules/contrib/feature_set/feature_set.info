@@ -1,0 +1,11 @@
+name = Feature Set
+description = "Provides API to allow simplified enabling and disabling of module sets."
+core = "7.x"
+
+
+; Information added by drupal.org packaging script on 2012-03-01
+version = "7.x-1.0"
+core = "7.x"
+project = "feature_set"
+datestamp = "1330626343"
+
