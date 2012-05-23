@@ -1,0 +1,12 @@
+name = wiki9999_default_views_of_topics
+description = All default views of all topics and opinon, standpoint, proposal of a topic
+core = 7.x
+package = Wiki9999
+dependencies[] = ctools
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:1
+features[views_view][] = topic_discussion_default
+features[views_view][] = topic_opinion_default
+features[views_view][] = topic_standpoint_default
+features[views_view][] = topic_topic_all

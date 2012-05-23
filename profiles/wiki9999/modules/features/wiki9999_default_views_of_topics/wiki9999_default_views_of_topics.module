@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the wiki9999_default_views_of_topics feature.
+ */
+
+include_once 'wiki9999_default_views_of_topics.features.inc';
