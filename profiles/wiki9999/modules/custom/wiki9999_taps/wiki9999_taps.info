@@ -1,0 +1,5 @@
+name = Taps
+description = Main taps as blocks
+package = Wiki9999
+core = 7.x
+files[] = wiki9999_taps.module

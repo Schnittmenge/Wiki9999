@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function wiki9999_taps_block_info() {
+  $blocks = array();
+
+  // This block contains
+  $blocks['wiki9999_topic_all_active'] = array(
+    'info' => t('Topic active'),
+    'region' => 'preface_middle',
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+
+  $blocks['wiki9999_topic_all_deactive'] = array(
+    'info' => t('Topic deactive'),
+    'region' => 'preface_middle',
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '<front>',
+  );
+
+  $blocks['wiki9999_discussion_active'] = array(
+    'info' => t('Discussion'),
+    'region' => 'preface_last',
+    'status' => TRUE,
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => implode("\n", array (
+      'admin*',
+      '<front>',
+      'node/*/devel',
+      'user*',
+      )),
+  );
+
+  return $blocks;
+}
+
+/**
+  * Implements hook_block_view().
+  */
+function wiki9999_taps_block_view($delta='') {
+  $block = array();
+
+  switch ($delta) {
+    case 'wiki9999_topic_all_active':
+      $block['content'] = topic_all_active_contents();
+      break;
+    case 'wiki9999_topic_all_deactive':
+      $block['content'] = topic_all_deactive_contents();
+      break;
+    case 'wiki9999_discussion_active':
+      $block['content'] = discussion_active_contents();
+      break;      
+  }
+ 
+  return $block;
+}
+
+/**
+* custom html block
+* @return string
+*/
+function topic_all_active_contents() {
+  return '
+<div class="topic_activ">Topics</div>
+  ';
+}
+
+function topic_all_deactive_contents() {
+  return '
+<div class="topic_deactiv"><a href="/">Topics</a></div>
+  ';
+}
+
+function discussion_active_contents() {
+  return '
+<div class="discussion_activ">Discussion</div>
+  ';
+}
+?>
