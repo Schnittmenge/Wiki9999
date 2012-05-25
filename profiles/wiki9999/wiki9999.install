@@ -5,6 +5,7 @@
  *
  * Perform actions to set up the site for this profile.
  */
+ 
 function wiki9999_install() {
  // Add text formats.
   $filtered_html_format = array(
@@ -128,4 +129,18 @@ function wiki9999_install() {
   // Enable default permissions for system roles.
   user_role_grant_permissions(DRUPAL_ANONYMOUS_RID, array('access content'));
   user_role_grant_permissions(DRUPAL_AUTHENTICATED_RID, array('access content'));
+  
+    // Disable the Bartik theme.
+  db_update('system')
+    ->fields(array('status' => 0))
+    ->condition('type', 'theme')
+    ->condition('name', 'bartik')
+    ->execute();
+    
+    // Enable the wiki9999 theme.
+  db_update('system')
+    ->fields(array('status' => 1))
+    ->condition('type', 'theme')
+    ->condition('name', 'wiki9999')
+    ->execute();
 }
