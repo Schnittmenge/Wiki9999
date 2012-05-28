@@ -1,8 +1,9 @@
-name = wiki9999_context_discussion
+name = Context discussion
 description = Showing blocks and views in the context of a topic
 core = 7.x
-package = Features
-version = 7.x-1.0-alpha1
+package = Wiki9999
+php = 5.2.4
+version = 7.x-1.0-alpha2
 project = wiki9999_context_discussion
 dependencies[] = context
 dependencies[] = ctools
