@@ -37,6 +37,15 @@ function wiki9999_default_views_of_topics_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = 1;
   $handler->display->display_options['row_options']['comments'] = 0;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'no proposals';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are no proposals to that topic.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -120,17 +129,20 @@ function wiki9999_default_views_of_topics_views_default_views() {
     'proposal' => 'proposal',
   );
 
-  /* Display: topic_proposal_default */
-  $handler = $view->new_display('entity_view', 'topic_proposal_default', 'entity_view_1');
-  $handler->display->display_options['entity_type'] = 'node';
-  $handler->display->display_options['bundles'] = array(
-    0 => 'topic',
-  );
-  $handler->display->display_options['show_title'] = 0;
-
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['block_description'] = 'topic_proposal_default';
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['path'] = 'proposals_of_topic';
+
+  /* Display: Feed */
+  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['path'] = 'proposals_of_topic/feed';
   $translatables['topic_discussion_default'] = array(
     t('Master'),
     t('more'),
@@ -142,9 +154,13 @@ function wiki9999_default_views_of_topics_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('no proposals'),
+    t('There are no proposals to that topic.'),
     t('All'),
-    t('topic_proposal_default'),
     t('Block'),
+    t('topic_proposal_default'),
+    t('Page'),
+    t('Feed'),
   );
   $export['topic_discussion_default'] = $view;
 
@@ -175,6 +191,15 @@ function wiki9999_default_views_of_topics_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = 1;
   $handler->display->display_options['row_options']['comments'] = 0;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'No opinion';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are no opinions to that topic.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -258,17 +283,25 @@ function wiki9999_default_views_of_topics_views_default_views() {
     'opinion' => 'opinion',
   );
 
-  /* Display: topic_opinion_default */
-  $handler = $view->new_display('entity_view', 'topic_opinion_default', 'entity_view_1');
-  $handler->display->display_options['entity_type'] = 'node';
-  $handler->display->display_options['bundles'] = array(
-    0 => 'topic',
-  );
-  $handler->display->display_options['show_title'] = 0;
-
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['block_description'] = 'topic_opinion_default';
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['path'] = 'opinions_of_topic';
+
+  /* Display: Feed */
+  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['path'] = 'opinions_of_topic/feed';
+  $handler->display->display_options['displays'] = array(
+    'page_1' => 'page_1',
+    'default' => 0,
+    'block_1' => 0,
+  );
   $translatables['topic_opinion_default'] = array(
     t('Master'),
     t('more'),
@@ -280,9 +313,13 @@ function wiki9999_default_views_of_topics_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('No opinion'),
+    t('There are no opinions to that topic.'),
     t('All'),
-    t('topic_opinion_default'),
     t('Block'),
+    t('topic_opinion_default'),
+    t('Page'),
+    t('Feed'),
   );
   $export['topic_opinion_default'] = $view;
 
@@ -313,6 +350,15 @@ function wiki9999_default_views_of_topics_views_default_views() {
   $handler->display->display_options['row_plugin'] = 'node';
   $handler->display->display_options['row_options']['links'] = 1;
   $handler->display->display_options['row_options']['comments'] = 0;
+  /* No results behavior: Global: Text area */
+  $handler->display->display_options['empty']['area']['id'] = 'area';
+  $handler->display->display_options['empty']['area']['table'] = 'views';
+  $handler->display->display_options['empty']['area']['field'] = 'area';
+  $handler->display->display_options['empty']['area']['label'] = 'no standpoints';
+  $handler->display->display_options['empty']['area']['empty'] = FALSE;
+  $handler->display->display_options['empty']['area']['content'] = 'There are no standpoints to that topic.';
+  $handler->display->display_options['empty']['area']['format'] = 'filtered_html';
+  $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -396,17 +442,20 @@ function wiki9999_default_views_of_topics_views_default_views() {
     'standpoint' => 'standpoint',
   );
 
-  /* Display: Entity content */
-  $handler = $view->new_display('entity_view', 'Entity content', 'entity_view_1');
-  $handler->display->display_options['entity_type'] = 'node';
-  $handler->display->display_options['bundles'] = array(
-    0 => 'topic',
-  );
-  $handler->display->display_options['show_title'] = 0;
-
   /* Display: Block */
   $handler = $view->new_display('block', 'Block', 'block_1');
   $handler->display->display_options['block_description'] = 'topic_standpoint_default';
+
+  /* Display: Page */
+  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->display->display_options['path'] = 'standpoints_of_topic';
+
+  /* Display: Feed */
+  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['path'] = 'standpoints_of_topic/feed';
   $translatables['topic_standpoint_default'] = array(
     t('Master'),
     t('more'),
@@ -418,10 +467,13 @@ function wiki9999_default_views_of_topics_views_default_views() {
     t('Items per page'),
     t('- All -'),
     t('Offset'),
+    t('no standpoints'),
+    t('There are no standpoints to that topic.'),
     t('All'),
-    t('Entity content'),
     t('Block'),
     t('topic_standpoint_default'),
+    t('Page'),
+    t('Feed'),
   );
   $export['topic_standpoint_default'] = $view;
 
@@ -501,7 +553,7 @@ function wiki9999_default_views_of_topics_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['row_plugin'] = 'node_rss';
-  $handler->display->display_options['path'] = 'topics-all.xml';
+  $handler->display->display_options['path'] = 'all-topics/feed';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
     'page' => 'page',
