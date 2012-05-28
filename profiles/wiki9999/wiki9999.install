@@ -90,7 +90,7 @@ function wiki9999_install() {
       'module' => 'system',
       'delta' => 'navigation',
       'theme' => $default_theme,
-      'status' => 1,
+      'status' => 0,
       'weight' => 0,
       'region' => 'sidebar_first',
       'pages' => '',

@@ -6,12 +6,10 @@ color: #333;
  a:link {
 color: #5c7acc;
 font-weight: normal;
-
  }
  
  a:visited {
 color: #7a90cc;
-
  }
  
  a:hover {
@@ -77,13 +75,23 @@ margin: 0 auto;
     text-align: center;
 }
 
-.region-top-middle {
+#block-wiki9999-taps-wiki9999-start-topic { 
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 20px;
+    background-color: #333;
+    width: 950px;
+    text-align: center;
+}
+
+#block-wiki9999-misc-wiki9999-topic-standpoint-link {
     position: absolute;
     top: 0px;
     left: 317px;
+    height: 20px;
     background-color: #294798;
     width: 316px;
-    height: 20px;
     text-align: center;
 }
 
@@ -127,6 +135,10 @@ background:none;
 background-color: #009FE3;
 width: 690px;
  }
+ 
+.front #menu {
+    background: #333;
+}
  
  #nav {
  height: 35px;
@@ -307,15 +319,23 @@ display: none;
 
 .topic_activ {
     padding: 7px 10px;
-    background: #009FE3;
-    color: #333;
+    background: #333;
+    color: #fff;
 }
 
 .topic_deactiv {
     padding: 7px 10px;
-    background: #C4EBF8;   
+    background: #D3DCE3;   
     color: #fff;
 }
+
+.topic_deactiv a:link {
+color: #fff;
+ }
+ 
+.topic_deactiv a:visited  {
+color: #fff;
+ }
 
 .region-preface-last {
     position: absolute;
@@ -337,7 +357,21 @@ display: none;
     background: #C4EBF8;
     color: #fff;
 }
- 
+
+.region-sidebar-first .block-wiki9999-taps .content {
+    padding: 7px 10px;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+#block-wiki9999-taps-wiki9999-filter-topics {
+    background: #333;
+    color: #fff;
+}
+
+#block-wiki9999-taps-wiki9999-filter-discussion {
+    background: #009FE3;
+}
  
 #preface-wrapper.in3 .column {
 display: none;
@@ -388,6 +422,10 @@ padding: 10px;
 
 .node-topic {
 border: 1px solid #333;
+}
+
+.node-topic .title a {
+    color: #333;
 }
 
 .node-opinion {

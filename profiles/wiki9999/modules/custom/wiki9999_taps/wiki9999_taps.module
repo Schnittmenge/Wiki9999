@@ -35,10 +35,58 @@ function wiki9999_taps_block_info() {
     'pages' => implode("\n", array (
       'admin*',
       '<front>',
+      'node/add/topic',
       'node/*/devel',
       'user*',
       )),
+   );
+  
+  $blocks['wiki9999_start_topic'] = array(
+    'info' => t('Start a new topic'),
+    'region' => 'top_middle',
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
   );
+  
+  $blocks['wiki9999_filter_topics'] = array(
+    'info' => t('Filter topics'),
+    'region' => 'sidebar_first',
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+  
+  $blocks['wiki9999_filter_discussion'] = array(
+    'info' => t('Filter discussion'),
+    'region' => 'sidebar_first',
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => implode("\n", array (
+      'admin*',
+      '<front>',
+      'node/add/topic',
+      'node/*/devel',
+      'user*',
+      )),
+   );
+  
+  $blocks['wiki9999_no_filter'] = array(
+    'info' => t('No filter'),
+    'region' => 'sidebar_first',
+    'cache' => DRUPAL_CACHE_GLOBAL, 
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => implode("\n", array (
+      'admin*',
+      'node/add/topic',
+      'node/*/devel',
+      'user*',
+      )),
+   );
 
   return $blocks;
 }
@@ -58,7 +106,19 @@ function wiki9999_taps_block_view($delta='') {
       break;
     case 'wiki9999_discussion_active':
       $block['content'] = discussion_active_contents();
-      break;      
+      break;
+    case 'wiki9999_start_topic':
+      $block['content'] = start_topic_contents();
+      break;
+    case 'wiki9999_filter_topics':
+      $block['content'] = t('Topic Filters');
+      break;
+    case 'wiki9999_filter_discussion':
+      $block['content'] = t('Discussion Filters');
+      break;
+    case 'wiki9999_no_filter':
+      $block['content'] = t('  ');
+      break; 
   }
  
   return $block;
@@ -85,4 +145,12 @@ function discussion_active_contents() {
 <div class="discussion_activ">Discussion</div>
   ';
 }
+
+function start_topic_contents() {
+  return '
+<a href="node/add/topic">Start a new topic</a>
+  ';
+}
+
+
 ?>
