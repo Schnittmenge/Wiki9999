@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the wiki9999_context_discussion feature.
+ */
+
+include_once 'wiki9999_context_discussion.features.inc';

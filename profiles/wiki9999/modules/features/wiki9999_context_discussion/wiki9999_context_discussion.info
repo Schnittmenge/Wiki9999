@@ -1,0 +1,13 @@
+name = wiki9999_context_discussion
+description = Showing blocks and views in the context of a topic
+core = 7.x
+package = Features
+version = 7.x-1.0-alpha1
+project = wiki9999_context_discussion
+dependencies[] = context
+dependencies[] = ctools
+dependencies[] = views
+dependencies[] = wiki9999_topic
+features[context][] = context_discussion
+features[ctools][] = context:context:3
+features[features_api][] = api:1
