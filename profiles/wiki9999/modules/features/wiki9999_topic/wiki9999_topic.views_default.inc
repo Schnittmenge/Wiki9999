@@ -120,13 +120,15 @@ function wiki9999_topic_views_default_views() {
     'standpoint' => 'standpoint',
   );
 
-  /* Display: Entity content */
-  $handler = $view->new_display('entity_view', 'Entity content', 'entity_view_1');
-  $handler->display->display_options['entity_type'] = 'node';
-  $handler->display->display_options['bundles'] = array(
-    0 => 'topic',
-  );
-  $handler->display->display_options['show_title'] = 0;
+  /* Display: Block */
+  $handler = $view->new_display('block', 'Block', 'block_1');
+
+  /* Display: Feed */
+  $handler = $view->new_display('feed', 'Feed', 'feed_1');
+  $handler->display->display_options['pager']['type'] = 'some';
+  $handler->display->display_options['style_plugin'] = 'rss';
+  $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['path'] = 'topic-discussion';
   $translatables['topic_discussion'] = array(
     t('Master'),
     t('more'),
@@ -139,7 +141,8 @@ function wiki9999_topic_views_default_views() {
     t('- All -'),
     t('Offset'),
     t('All'),
-    t('Entity content'),
+    t('Block'),
+    t('Feed'),
   );
   $export['topic_discussion'] = $view;
 
