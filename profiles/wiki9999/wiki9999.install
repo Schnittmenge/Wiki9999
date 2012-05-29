@@ -143,4 +143,7 @@ function wiki9999_install() {
     ->condition('type', 'theme')
     ->condition('name', 'wiki9999')
     ->execute();
+    
+    //Set frontpage
+    variable_set('site_frontpage', 'all-topics');
 }
