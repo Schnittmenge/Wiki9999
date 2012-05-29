@@ -52,12 +52,6 @@
 		</div><!-- /search-box -->
 	<?php endif; ?>
 
-	<?php if ($feed_icons): ?>
-		<div class="feed-wrapper">
-			<?php print $feed_icons; ?>
-		</div>
-	<?php endif; ?>
-
 	<?php if (!$is_admin): ?>
 		<div id="authorize">
       		      <ul><?php global $user; if ($user->uid != 0) { print '<li class="first">' .t('Logged in as '). '<a href="' .url('user/'.$user->uid). '">' .$user->name. '</a></li>'; print '<li><a href="' .url('user/logout'). '">' .t('Logout'). '</a></li>'; } else { print '<li class="first"><a href="' .url('user'). '">' .t('Login'). '</a></li>'; print '<li><a href="' .url('user/register'). '">' .t('Register'). '</a></li>'; } ?></ul>
@@ -219,6 +213,13 @@
 <?php print theme('links__system_secondary_menu', array('links' => $secondary_menu, 'attributes' => array('id' => 'subnav', 'class' => array('links', 'clearfix')))); ?>
 </div>
 <?php endif; ?>
+
+	<?php if ($feed_icons): ?>
+		<div class="feed-wrapper">
+			<?php print $feed_icons; ?>
+		</div>
+	<?php endif; ?>
+
 </div> <!-- end footer wrapper -->
 
 <div style="clear:both"></div>

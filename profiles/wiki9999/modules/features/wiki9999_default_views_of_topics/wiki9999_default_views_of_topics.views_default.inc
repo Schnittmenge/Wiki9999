@@ -504,8 +504,8 @@ function wiki9999_default_views_of_topics_views_default_views() {
   $handler->display->display_options['empty']['area']['field'] = 'area';
   $handler->display->display_options['empty']['area']['label'] = 'No topic';
   $handler->display->display_options['empty']['area']['empty'] = FALSE;
-  $handler->display->display_options['empty']['area']['content'] = 'No topic posted';
-  $handler->display->display_options['empty']['area']['format'] = 'full_html_textformat';
+  $handler->display->display_options['empty']['area']['content'] = 'No topics available. Start the first topic <a href="/node/add/topic">now</a> ';
+  $handler->display->display_options['empty']['area']['format'] = 'full_html';
   $handler->display->display_options['empty']['area']['tokenize'] = 0;
   /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -570,7 +570,7 @@ function wiki9999_default_views_of_topics_views_default_views() {
     t('- All -'),
     t('Offset'),
     t('No topic'),
-    t('No topic posted'),
+    t('No topics available. Start the first topic <a href="/node/add/topic">now</a> '),
     t('Post date'),
     t('Page'),
     t('Feed'),

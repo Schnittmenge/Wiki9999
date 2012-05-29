@@ -146,4 +146,5 @@ function wiki9999_install() {
     
     //Set frontpage
     variable_set('site_frontpage', 'all-topics');
+      
 }

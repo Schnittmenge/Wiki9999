@@ -52,7 +52,7 @@ function wiki9999_topic_field_default_fields() {
           'weight' => '0',
         ),
         'teaser' => array(
-          'label' => 'hidden',
+          'label' => 'above',
           'module' => 'text',
           'settings' => array(
             'trim_length' => 600,
@@ -381,8 +381,9 @@ function wiki9999_topic_field_default_fields() {
       'display' => array(
         'default' => array(
           'label' => 'above',
+          'module' => 'taxonomy',
           'settings' => array(),
-          'type' => 'hidden',
+          'type' => 'taxonomy_term_reference_link',
           'weight' => '7',
         ),
         'teaser' => array(
@@ -390,7 +391,7 @@ function wiki9999_topic_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '0',
+          'weight' => '7',
         ),
       ),
       'entity_type' => 'node',
