@@ -119,14 +119,14 @@ function wiki9999_topic_field_default_fields() {
           'module' => 'token_field',
           'settings' => array(),
           'type' => 'token_field_default',
-          'weight' => 8,
+          'weight' => '8',
         ),
         'rss' => array(
           'label' => 'above',
           'module' => 'token_field',
           'settings' => array(),
           'type' => 'token_field_default',
-          'weight' => '0',
+          'weight' => '6',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -408,7 +408,7 @@ function wiki9999_topic_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '6',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
