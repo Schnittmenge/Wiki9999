@@ -1,0 +1,14 @@
+name = RDFa
+description = The wiki9999 RDFa mapping
+core = 7.x
+package = Wiki9999
+php = 5.2.4
+version = 7.x-1.0-alpha1
+project = wiki9999_rdfa
+dependencies[] = rdf
+dependencies[] = rdfx
+features[features_api][] = api:1
+features[rdf_mappings][] = node-opinion
+features[rdf_mappings][] = node-proposal
+features[rdf_mappings][] = node-standpoint
+features[rdf_mappings][] = node-topic
