@@ -1,7 +1,7 @@
 <?php
 
 function wiki9999_misc_install() {
-  $name = 'CC BY-SA';
+  $name = 'CC-BY-SA';
 
   $vocabulary = array(
     'name' => t('Legal rights'),
