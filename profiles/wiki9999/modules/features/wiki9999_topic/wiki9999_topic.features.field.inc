@@ -51,6 +51,13 @@ function wiki9999_topic_field_default_fields() {
           'type' => 'text_default',
           'weight' => '0',
         ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'text',
+          'settings' => array(),
+          'type' => 'text_default',
+          'weight' => '1',
+        ),
         'teaser' => array(
           'label' => 'above',
           'module' => 'text',
@@ -78,6 +85,68 @@ function wiki9999_topic_field_default_fields() {
         ),
         'type' => 'text_textarea_with_summary',
         'weight' => '7',
+      ),
+    ),
+  );
+
+  // Exported field: 'node-topic-field_content_type'
+  $fields['node-topic-field_content_type'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_content_type',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'module' => 'token_field',
+      'settings' => array(
+        'template' => array(
+          'format' => 'plain_text',
+          'value' => '[node:content-type]',
+        ),
+      ),
+      'translatable' => '0',
+      'type' => 'token_field',
+    ),
+    'field_instance' => array(
+      'bundle' => 'topic',
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '3',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'token_field',
+          'settings' => array(),
+          'type' => 'token_field_default',
+          'weight' => '6',
+        ),
+        'teaser' => array(
+          'label' => 'above',
+          'settings' => array(),
+          'type' => 'hidden',
+          'weight' => '3',
+        ),
+      ),
+      'entity_type' => 'node',
+      'field_name' => 'field_content_type',
+      'label' => 'Content type',
+      'required' => FALSE,
+      'settings' => array(
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'token_field',
+        'settings' => array(),
+        'type' => 'token_field',
+        'weight' => '8',
       ),
     ),
   );
@@ -111,7 +180,14 @@ function wiki9999_topic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '4',
+          'weight' => '5',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'token_field',
+          'settings' => array(),
+          'type' => 'token_field_default',
+          'weight' => '5',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -185,7 +261,14 @@ function wiki9999_topic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '5',
+          'weight' => '6',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_plain',
+          'weight' => '7',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -241,6 +324,13 @@ function wiki9999_topic_field_default_fields() {
           'settings' => array(),
           'type' => 'hidden',
           'weight' => '2',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'token_field',
+          'settings' => array(),
+          'type' => 'token_field_default',
+          'weight' => '3',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -310,7 +400,14 @@ function wiki9999_topic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '6',
+          'weight' => '7',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '2',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -384,7 +481,14 @@ function wiki9999_topic_field_default_fields() {
           'module' => 'taxonomy',
           'settings' => array(),
           'type' => 'taxonomy_term_reference_link',
-          'weight' => '7',
+          'weight' => '1',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'taxonomy',
+          'settings' => array(),
+          'type' => 'taxonomy_term_reference_link',
+          'weight' => '0',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -440,7 +544,14 @@ function wiki9999_topic_field_default_fields() {
           'label' => 'above',
           'settings' => array(),
           'type' => 'hidden',
-          'weight' => '3',
+          'weight' => '4',
+        ),
+        'rss' => array(
+          'label' => 'above',
+          'module' => 'token_field',
+          'settings' => array(),
+          'type' => 'token_field_default',
+          'weight' => '4',
         ),
         'teaser' => array(
           'label' => 'above',
@@ -469,6 +580,7 @@ function wiki9999_topic_field_default_fields() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Body');
+  t('Content type');
   t('Language');
   t('Legal rights');
   t('Publisher homepage');

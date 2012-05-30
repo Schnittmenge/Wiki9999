@@ -553,6 +553,8 @@ function wiki9999_default_views_of_topics_views_default_views() {
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['style_plugin'] = 'rss';
   $handler->display->display_options['row_plugin'] = 'node_rss';
+  $handler->display->display_options['row_options']['item_length'] = 'rss';
+  $handler->display->display_options['row_options']['links'] = 0;
   $handler->display->display_options['path'] = 'all-topics/feed';
   $handler->display->display_options['displays'] = array(
     'default' => 'default',
