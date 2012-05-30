@@ -44,3 +44,4 @@ features[variable][] = menu_parent_topic
 features[variable][] = node_options_topic
 features[variable][] = node_preview_topic
 features[variable][] = node_submitted_topic
+features[views_view][] = topic_discussion
