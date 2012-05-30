@@ -8,3 +8,6 @@ dependencies[] = admin_menu_toolbar
 dependencies[] = admin_devel
 dependencies[] = views_ui
 dependencies[] = field_ui
+dependencies[] = rdf_ui
+dependencies[] = rules_ui
+dependencies[] = rules_scheduler_ui
