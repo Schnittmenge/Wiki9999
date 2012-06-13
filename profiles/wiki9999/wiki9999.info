@@ -14,4 +14,5 @@ dependencies[] = wiki9999_default_views_of_topics
 dependencies[] = wiki9999_taps
 dependencies[] = wiki9999_context_discussion
 dependencies[] = wiki9999_rdfa
+dependencies[] = wiki9999_user_permissions
 
