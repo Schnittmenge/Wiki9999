@@ -17,4 +17,5 @@ dependencies[] = feeds_import
 dependencies[] = feeds_news
 dependencies[] = feeds_ui
 dependencies[] = schema
+dependencies[] = feeds_xpathparser
 features[features_api][] = api:1
