@@ -1,0 +1,5 @@
+name = Wiki9999 Feeds
+description = Feeds needed to connect diferente Wiki9999 platforms
+package = Wiki9999
+core = 7.x
+files[] = wiki9999_feeds.module

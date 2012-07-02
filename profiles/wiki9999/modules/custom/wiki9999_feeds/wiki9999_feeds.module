@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function wiki9999_feeds_block_info() {
+  $blocks = array();
+
+  // This block contains
+  
+   $blocks['connector_feeds'] = array(
+    'info' => t('Connector Feeds'),
+    'region' => 'sidebar_first',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+  
+  return $blocks;
+}
+
+
+
+/**
+  * Implements hook_block_view().
+  */
+function wiki9999_feeds_block_view($delta='') {
+  $block = array();
+
+  switch ($delta) {
+      case 'connector_feeds':
+      $block['title'] = t('Connector Feeds');
+      $block['content'] = $block['content'] = connector_feeds_contents();
+      break;
+    
+  }
+  return $block;
+}
+
+
+/**
+* custom html block
+* @return string
+*/
+function connector_feeds_contents() {
+  return '
+      <ul>
+        <li><a href="/all-topics-of-a-website.xml">All Topics</a></li>
+        <li><a href="/all-proposals-of-a-website.xml">All Proposals</a></li>
+        <li><a href="/all-standpoints-of-a-website.xml">All Standpoints</a></li>
+        <li><a href="/all-opinions-of-a-website.xml">All Opinions</a></li>
+      </ul> 
+  ';
+}
+
+?>

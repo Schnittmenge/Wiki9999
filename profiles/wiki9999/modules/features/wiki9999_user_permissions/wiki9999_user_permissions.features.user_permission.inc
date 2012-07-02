@@ -10,6 +10,15 @@
 function wiki9999_user_permissions_user_default_permissions() {
   $permissions = array();
 
+  // Exported permission: access news feeds.
+  $permissions['access news feeds'] = array(
+    'name' => 'access news feeds',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'aggregator',
+  );
+
   // Exported permission: create opinion content.
   $permissions['create opinion content'] = array(
     'name' => 'create opinion content',
