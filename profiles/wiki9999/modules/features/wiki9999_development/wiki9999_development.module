@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Development feature.
+ */
+
+include_once 'wiki9999_development.features.inc';
