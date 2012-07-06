@@ -17,4 +17,4 @@ dependencies[] = wiki9999_rdfa
 dependencies[] = wiki9999_user_permissions
 dependencies[] = wiki9999_connecter
 dependencies[] = wiki9999_feeds
-dependencies[] = wiki9999_develoment
+dependencies[] = wiki9999_development
