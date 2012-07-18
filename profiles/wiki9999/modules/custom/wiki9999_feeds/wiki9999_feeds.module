@@ -29,7 +29,7 @@ function wiki9999_feeds_block_view($delta='') {
 
   switch ($delta) {
       case 'connector_feeds':
-      $block['title'] = t('Connector Feeds');
+      $block['title'] = t('All topics');
       $block['content'] = $block['content'] = connector_feeds_contents();
       break;
     
@@ -45,10 +45,13 @@ function wiki9999_feeds_block_view($delta='') {
 function connector_feeds_contents() {
   return '
       <ul>
-        <li><a href="/all-topics-of-a-website.xml">All Topics</a></li>
-        <li><a href="/all-proposals-of-a-website.xml">All Proposals</a></li>
-        <li><a href="/all-standpoints-of-a-website.xml">All Standpoints</a></li>
-        <li><a href="/all-opinions-of-a-website.xml">All Opinions</a></li>
+        <li><a href="/all-topics/feed">Drupal default feed (xml)</a></li>
+        <li><a href="/all-topics-of-a-website-in-xml">Views datasourc (xml)</a></li>
+        <li><a href="/all-topics-of-a-website-in-json">Views datasource (json)</a></li>
+        <li><a href="/all-topics-of-a-website-in-json">Views datasource (json)</a></li>
+        <li><a href="/node/1.json">RESTful Web Services: JSON (just one node!)</a></li>
+        <li><a href="/node/1.xml">RESTful Web Services: XML (just one node!)</a></li>
+        <li><a href="/node/1.rdf">RESTful Web Services: RDF (just one node!)</a></li>
       </ul> 
   ';
 }

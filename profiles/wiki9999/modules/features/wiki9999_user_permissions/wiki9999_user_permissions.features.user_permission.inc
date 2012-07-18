@@ -19,6 +19,60 @@ function wiki9999_user_permissions_user_default_permissions() {
     'module' => 'aggregator',
   );
 
+  // Exported permission: access resource file.
+  $permissions['access resource file'] = array(
+    'name' => 'access resource file',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: access resource i18n_translation.
+  $permissions['access resource i18n_translation'] = array(
+    'name' => 'access resource i18n_translation',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: access resource node.
+  $permissions['access resource node'] = array(
+    'name' => 'access resource node',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: access resource taxonomy_term.
+  $permissions['access resource taxonomy_term'] = array(
+    'name' => 'access resource taxonomy_term',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: access resource taxonomy_vocabulary.
+  $permissions['access resource taxonomy_vocabulary'] = array(
+    'name' => 'access resource taxonomy_vocabulary',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'restws',
+  );
+
+  // Exported permission: access resource user.
+  $permissions['access resource user'] = array(
+    'name' => 'access resource user',
+    'roles' => array(
+      0 => 'anonymous user',
+    ),
+    'module' => 'restws',
+  );
+
   // Exported permission: create opinion content.
   $permissions['create opinion content'] = array(
     'name' => 'create opinion content',
